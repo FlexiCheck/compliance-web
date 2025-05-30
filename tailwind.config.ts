@@ -28,6 +28,9 @@ const config = {
           DEFAULT: "var(--primary)",
           foreground: "var(--primary-foreground)",
         },
+        text: {
+          main: "#3C82F6",
+        },
         secondary: {
           DEFAULT: "var(--secondary)",
           foreground: "var(--secondary-foreground)",
