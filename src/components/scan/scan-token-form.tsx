@@ -1,26 +1,19 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "../ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { Button } from '../ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { Input } from '../ui/input';
 
 const formSchema = z.object({
   tokenName: z.string().min(1).trim(),
   website: z
     .string()
     .url({
-      message:
-        "Please enter a valid website URL (including http:// or https://)",
+      message: 'Please enter a valid website URL (including http:// or https://)',
     })
     .trim(),
 });
@@ -30,13 +23,13 @@ type FormValues = z.infer<typeof formSchema>;
 export const ScanTokenForm = () => {
   const form = useForm<FormValues>({
     defaultValues: {
-      tokenName: "",
-      website: "",
+      tokenName: '',
+      website: '',
     },
     resolver: zodResolver(formSchema),
   });
 
-  const [tokenName, website] = form.watch(["tokenName", "website"]);
+  const [tokenName, website] = form.watch(['tokenName', 'website']);
 
   const onSubmit = (values: FormValues) => {
     console.log(values);
@@ -48,9 +41,7 @@ export const ScanTokenForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="bg-white p-5 border rounded-md w-[670px]"
       >
-        <h3 className="tracking-tight text-2xl font-bold text-center">
-          Analyze Crypto Token
-        </h3>
+        <h3 className="tracking-tight text-2xl font-bold text-center">Analyze Crypto Token</h3>
 
         <p className="text-sm text-muted-foreground text-center mt-2 mb-5">
           Enter token details to perform due diligence analysis
@@ -84,11 +75,7 @@ export const ScanTokenForm = () => {
           )}
         />
 
-        <Button
-          type="submit"
-          disabled={tokenName === "" || website === ""}
-          className="w-full"
-        >
+        <Button type="submit" disabled={tokenName === '' || website === ''} className="w-full">
           Run Analysis
         </Button>
       </form>

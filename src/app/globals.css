@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -47,7 +47,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(0.98 0 0); /* #fafbfc */
+  --background: #f8fafc; /* #fafbfc */
   --foreground: oklch(0.2 0.01 240); /* #232946 */
   --card: oklch(1 0 0); /* #ffffff */
   --card-foreground: oklch(0.2 0.01 240); /* #232946 */
@@ -81,7 +81,7 @@
 }
 
 .dark {
-  --background: oklch(0.15 0.01 240); /* #181a20 */
+  --background: #f8fafc; /* #181a20 */
   --foreground: oklch(0.98 0 0); /* #fafbfc */
   --card: oklch(0.2 0.01 240); /* #232946 */
   --card-foreground: oklch(0.98 0 0); /* #fafbfc */
