@@ -18,6 +18,16 @@ const config = {
       },
     },
     extend: {
+      keyframes: {
+        scan: {
+          '0%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(200px)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        scan: 'scan 2s ease-in-out infinite',
+      },
       colors: {
         border: 'var(--border)',
         input: 'var(--input)',

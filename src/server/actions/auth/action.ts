@@ -60,12 +60,17 @@ export const getUserAction = async () => {
 };
 
 export const refreshTokenAction = async () => {
-  return await request(`${baseUrl}/auth/refresh`).post(
+  console.log('INN');
+  const response = await request(`${baseUrl}/auth/refresh`).post(
     {
       withoutAuth: true,
     },
     TAuthResponse
   );
+
+  console.log({ response });
+
+  return response;
 };
 
 export const logoutAction = async () => {

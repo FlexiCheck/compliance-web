@@ -31,7 +31,9 @@ export async function middleware(request: NextRequest) {
       }
     } catch {
       try {
+        console.log('refresh!!');
         const refresh = await refreshTokenAction();
+        console.log({ refresh });
 
         if (refresh.access_token) {
           request.cookies.set('access-token', refresh.access_token);

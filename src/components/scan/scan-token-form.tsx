@@ -1,12 +1,22 @@
 'use client';
 
+import { useState } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { Button } from '../ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
+import { ScanningLoader } from '@/components/scan/scanning-loader';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 const formSchema = z.object({
   tokenName: z.string().min(1).trim(),
@@ -21,6 +31,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export const ScanTokenForm = () => {
+  const [isScanning, setIsScanning] = useState(false);
   const form = useForm<FormValues>({
     defaultValues: {
       tokenName: '',
@@ -31,9 +42,20 @@ export const ScanTokenForm = () => {
 
   const [tokenName, website] = form.watch(['tokenName', 'website']);
 
-  const onSubmit = (values: FormValues) => {
-    console.log(values);
+  const onSubmit = async (values: FormValues) => {
+    setIsScanning(true);
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      console.log(values);
+    } finally {
+      setIsScanning(false);
+    }
   };
+
+  if (isScanning) {
+    return <ScanningLoader tokenName={tokenName} />;
+  }
 
   return (
     <Form {...form}>
