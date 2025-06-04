@@ -1,1 +1,1 @@
-export { ScanTokenForm } from "./scan-token-form";
+export { ScanTokenForm } from './scan-token-form';

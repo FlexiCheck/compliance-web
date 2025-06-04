@@ -1,15 +1,15 @@
 const recentTokens = [
   {
-    name: "TRU",
-    website: "TrueFi",
+    name: 'TRU',
+    website: 'TrueFi',
   },
   {
-    name: "ETH",
-    website: "Ethereum",
+    name: 'ETH',
+    website: 'Ethereum',
   },
   {
-    name: "LINK",
-    website: "Chainlink",
+    name: 'LINK',
+    website: 'Chainlink',
   },
 ];
 

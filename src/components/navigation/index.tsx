@@ -1,6 +1,8 @@
-import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
+
+import { UserButton } from './user-button';
 
 export const Navigation = () => {
   return (
@@ -14,10 +16,7 @@ export const Navigation = () => {
           <Button>Scan Token</Button>
         </Link>
 
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>MM</AvatarFallback>
-        </Avatar>
+        <UserButton />
       </div>
     </nav>
   );
