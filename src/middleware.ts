@@ -1,8 +1,10 @@
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getUserAction, refreshTokenAction } from './server/actions';
 
 export async function middleware(request: NextRequest) {
+  const cookieStore = await cookies();
   const protectedRoutes = ['/dashboard'];
   const currentPath = request.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.find((route) => currentPath.startsWith(route));
@@ -17,10 +19,7 @@ export async function middleware(request: NextRequest) {
 
   if (token) {
     try {
-      console.log({ token });
       const user = await getUserAction();
-
-      console.log({ user });
 
       if (isProtectedRoute && !user.email) {
         return nextRedirect('/sign-in');
@@ -31,12 +30,10 @@ export async function middleware(request: NextRequest) {
       }
     } catch {
       try {
-        console.log('refresh!!');
         const refresh = await refreshTokenAction();
-        console.log({ refresh });
 
         if (refresh.access_token) {
-          request.cookies.set('access-token', refresh.access_token);
+          cookieStore.set('access-token', refresh.access_token);
         } else {
           return nextRedirect('/sign-in');
         }

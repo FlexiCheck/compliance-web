@@ -2,11 +2,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { loginAction, setCookieAccessToken } from '@/server/actions';
+import { loginAction, setCookieTokens } from '@/server/actions';
 
 import { AuthForm } from './auth-form';
 
@@ -18,6 +18,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export const SignInForm = () => {
+  const router = useRouter();
   const form = useForm<FormValues>({
     defaultValues: {
       email: '',
@@ -34,8 +35,11 @@ export const SignInForm = () => {
   const onSubmit = async (values: FormValues) => {
     $login.mutate(values, {
       onSuccess: async (data) => {
-        await setCookieAccessToken(data.access_token);
-        redirect('/dashboard');
+        await setCookieTokens({
+          accessToken: data.access_token,
+          refreshToken: data.refresh_token,
+        });
+        router.push('/dashboard');
       },
       onError: () => {
         form.setError('root', {

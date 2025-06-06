@@ -3,31 +3,50 @@ import { cookies } from 'next/headers';
 
 import { request } from '@/lib/request';
 
-import { TAuthResponse, TRegisterResponse, TUser } from './schema';
+import { TAuthResponse, TUser } from './schema';
 
 enum TokenKeys {
   accessToken = 'access-token',
+  refreshToken = 'refresh-token',
 }
 
 const duration = 24 * 60 * 60 * 1000;
 const baseUrl = process.env.API_BASE_URL;
 
-export const setCookieAccessToken = async (accessToken: string) => {
+export const setCookieTokens = async ({
+  accessToken,
+  refreshToken,
+}: {
+  accessToken: string;
+  refreshToken: string;
+}) => {
   const cookieStore = await cookies();
-  cookieStore.set({
-    name: TokenKeys.accessToken,
-    value: accessToken,
+
+  const cookieOptions = {
     httpOnly: true,
     secure: true,
     sameSite: 'lax',
     path: '/',
     expires: new Date(Date.now() + duration),
+  } as const;
+
+  cookieStore.set({
+    name: TokenKeys.accessToken,
+    value: accessToken,
+    ...cookieOptions,
+  });
+
+  cookieStore.set({
+    name: TokenKeys.refreshToken,
+    value: refreshToken,
+    ...cookieOptions,
   });
 };
 
-export const removeAccessTokenCookie = async () => {
+export const removeTokenCookies = async () => {
   const cookieStore = await cookies();
   cookieStore.delete(TokenKeys.accessToken);
+  cookieStore.delete(TokenKeys.refreshToken);
 };
 
 type AuthActionInput = {
@@ -51,7 +70,7 @@ export const registerAction = async (input: AuthActionInput) => {
       body: input,
       withoutAuth: true,
     },
-    TRegisterResponse
+    TAuthResponse
   );
 };
 
@@ -60,17 +79,19 @@ export const getUserAction = async () => {
 };
 
 export const refreshTokenAction = async () => {
-  console.log('INN');
-  const response = await request(`${baseUrl}/auth/refresh`).post(
+  const cookieStore = await cookies();
+  const refreshToken = cookieStore.get(TokenKeys.refreshToken)?.value;
+  const headers = new Headers();
+
+  headers.set('Authorization', `Bearer ${refreshToken}`);
+
+  return await request(`${baseUrl}/auth/refresh`).post(
     {
       withoutAuth: true,
+      headers,
     },
     TAuthResponse
   );
-
-  console.log({ response });
-
-  return response;
 };
 
 export const logoutAction = async () => {

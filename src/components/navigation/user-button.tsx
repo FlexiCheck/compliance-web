@@ -5,7 +5,7 @@ import { LogOut, User } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { logoutAction, removeAccessTokenCookie } from '@/server/actions';
+import { logoutAction, removeTokenCookies } from '@/server/actions';
 
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import {
@@ -40,7 +40,7 @@ export const UserButton = () => {
           onClick={() => {
             $logout.mutate(undefined, {
               onSuccess: async () => {
-                await removeAccessTokenCookie();
+                await removeTokenCookies();
                 redirect('/sign-in');
               },
             });
