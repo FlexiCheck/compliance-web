@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { ScanningLoader } from '@/components/scan/scanning-loader';
@@ -17,10 +18,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { scanToken } from '@/server/actions/token';
 
 const formSchema = z.object({
-  tokenName: z.string().min(1).trim(),
-  website: z
+  symbol: z.string().min(1).trim(),
+  url: z
     .string()
     .url({
       message: 'Please enter a valid website URL (including http:// or https://)',
@@ -31,30 +33,38 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export const ScanTokenForm = () => {
-  const [isScanning, setIsScanning] = useState(false);
+  const router = useRouter();
+
   const form = useForm<FormValues>({
     defaultValues: {
-      tokenName: '',
-      website: '',
+      symbol: '',
+      url: '',
     },
     resolver: zodResolver(formSchema),
   });
 
-  const [tokenName, website] = form.watch(['tokenName', 'website']);
+  const [symbol, url] = form.watch(['symbol', 'url']);
+
+  const $scanToken = useMutation({
+    mutationKey: ['scan-token'],
+    mutationFn: scanToken,
+  });
 
   const onSubmit = async (values: FormValues) => {
-    setIsScanning(true);
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log(values);
-    } finally {
-      setIsScanning(false);
-    }
+    $scanToken.mutate(values, {
+      onSuccess: () => {
+        toast.success(`Token: ${values.symbol} scanned successfully`);
+        router.push('/dashboard');
+      },
+      onError: (error) => {
+        console.log({ error });
+        toast.error('Failed to scan token ' + error.message);
+      },
+    });
   };
 
-  if (isScanning) {
-    return <ScanningLoader tokenName={tokenName} />;
+  if ($scanToken.isPending) {
+    return <ScanningLoader tokenName={symbol} />;
   }
 
   return (
@@ -71,7 +81,7 @@ export const ScanTokenForm = () => {
 
         <FormField
           control={form.control}
-          name="tokenName"
+          name="symbol"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Token Name (e.g. Bitcoin)</FormLabel>
@@ -85,7 +95,7 @@ export const ScanTokenForm = () => {
 
         <FormField
           control={form.control}
-          name="website"
+          name="url"
           render={({ field }) => (
             <FormItem className="mt-5 mb-8">
               <FormLabel>Token Website URL (e.g. bitcoin.org)</FormLabel>
@@ -97,7 +107,7 @@ export const ScanTokenForm = () => {
           )}
         />
 
-        <Button type="submit" disabled={tokenName === '' || website === ''} className="w-full">
+        <Button type="submit" disabled={symbol === '' || url === ''} className="w-full">
           Run Analysis
         </Button>
       </form>
