@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { registerAction, setCookieAccessToken } from '@/server/actions';
+import { registerAction, setCookieTokens } from '@/server/actions';
 
 import { AuthForm } from './auth-form';
 
@@ -47,7 +47,10 @@ export const SignUpForm = () => {
   const onSubmit = (values: FormValues) => {
     $register.mutate(values, {
       onSuccess: async (data) => {
-        await setCookieAccessToken(data.access_token);
+        await setCookieTokens({
+          accessToken: data.access_token,
+          refreshToken: data.refresh_token,
+        });
         redirect('/dashboard');
       },
       onError: () => {

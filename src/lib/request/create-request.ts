@@ -63,7 +63,7 @@ export const createRequest = <Path extends string>(method: RequestMethods, url: 
 
         throw requestError({
           type: 'server',
-          message: error.message,
+          message: error.detail,
           name: error.name,
           errors: error.errors,
         });
@@ -74,7 +74,7 @@ export const createRequest = <Path extends string>(method: RequestMethods, url: 
 
         throw requestError({
           type: 'client',
-          message: error.message,
+          message: error.detail,
           name: error.name,
           errors: error.errors,
         });
