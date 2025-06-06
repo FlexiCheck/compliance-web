@@ -20,7 +20,10 @@ export const AuthForm = <T extends AuthFields>({ form, onSubmit, isLoading }: Pr
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 min-w-[400px]">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 min-w-[300px] md:min-w-[400px]"
+      >
         {rootError && (
           <Alert variant="destructive">
             <AlertCircleIcon />

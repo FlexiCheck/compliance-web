@@ -30,7 +30,7 @@ export const TokenOverview = ({
         <p className="text-gray-500 mt-1">{description}</p>
       </div>
 
-      <div className="flex items-stretch gap-5">
+      <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
         <DetailsItem
           title="Current Price"
           subContent={<p className="text-sm text-gray-500">Ticker: {ticker}</p>}
@@ -52,7 +52,7 @@ export const TokenOverview = ({
       </DetailsItem>
 
       <DetailsItem title="Website & Socials">
-        <div className="flex items-center gap-5 mt-1">
+        <div className="flex items-center gap-5 mt-2 gap-y-3 flex-wrap">
           {website && (
             <Link target="_blank" href={website}>
               <Button variant="external" size="xs">

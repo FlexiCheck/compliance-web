@@ -53,7 +53,7 @@ export const MarketFundamentals = ({
   return (
     <DetailsAccordion title="Market Fundamentals">
       <div className="space-y-5">
-        <div className="flex items-stretch gap-5">
+        <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
           {token_price && (
             <DetailsItem title="Current Price">
               <p className="text-2xl font-bold text-blue-600">{token_price}</p>
@@ -73,7 +73,7 @@ export const MarketFundamentals = ({
           )}
         </div>
 
-        <div className="flex items-stretch gap-5">
+        <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
           {volume_24h && (
             <DetailsItem title="24h Volume">
               <p className="text-2xl font-bold text-purple-600">{volume_24h}</p>
@@ -89,7 +89,7 @@ export const MarketFundamentals = ({
 
         {volume_by_exchange_type_24h && (
           <DetailsItem title="Volume by Exchange Type (24h)">
-            <div className="flex items-stretch gap-5 mt-2">
+            <div className="flex items-stretch gap-5 mt-2 md:flex-nowrap flex-wrap">
               <div className="text-center w-full">
                 <p className="text-lg font-semibold text-blue-600">
                   {volume_by_exchange_type_24h.CEX}
@@ -114,7 +114,7 @@ export const MarketFundamentals = ({
         </DetailsItem>
 
         <DetailsItem title="Additional Metrics">
-          <div className="flex items-stretch mt-2">
+          <div className="flex items-stretch mt-2 md:flex-nowrap flex-wrap gap-5">
             <DetailsSubItem title="Total Value Locked (24h)">
               <p className="text-lg font-semibold text-gray-500">
                 {total_value_locked_24h ?? 'N/A'}
@@ -134,7 +134,7 @@ export const MarketFundamentals = ({
         </DetailsItem>
 
         <DetailsItem title="7-Day Fundamentals">
-          <div className="flex items-stretch mt-2">
+          <div className="flex items-stretch mt-2 gap-5 md:flex-nowrap flex-wrap">
             <DetailsSubItem title="Total Active Users (7d)">
               <p className="text-lg font-semibold text-blue-600">
                 {formatNumber(total_active_users_7d)}

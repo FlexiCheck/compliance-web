@@ -1,3 +1,7 @@
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
+
 import { Accordion } from '@/components/ui/accordion';
 import {
   AdverseMediaAnalysis,
@@ -10,7 +14,9 @@ import {
   TokenOverviewAnalysis,
   TokenReviewPAnalysis,
 } from '@/lib/_types';
+import { getCachedTokenReport } from '@/server/actions/token';
 
+import { DetailsSkeleton } from './details-skeleton';
 import {
   AdverseMedia,
   CommunityInfo,
@@ -45,6 +51,16 @@ export const TokenDetails = ({
   holderAnalysis,
   communityInfo,
 }: Props) => {
+  const $report = useQuery({
+    queryKey: ['cached-report'],
+    queryFn: getCachedTokenReport,
+    enabled: false, // TODO remove when request will be ready
+  });
+
+  if ($report.isLoading) {
+    return <DetailsSkeleton />;
+  }
+
   return (
     <div className="w-full h-full space-y-5">
       <TokenOverview token_overview={overview} />
