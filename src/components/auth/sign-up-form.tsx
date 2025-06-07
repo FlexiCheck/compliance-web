@@ -2,8 +2,9 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { registerAction, setCookieTokens } from '@/server/actions';
@@ -31,6 +32,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export const SignUpForm = () => {
+  const router = useRouter();
+
   const form = useForm<FormValues>({
     defaultValues: {
       email: '',
@@ -51,12 +54,13 @@ export const SignUpForm = () => {
           accessToken: data.access_token,
           refreshToken: data.refresh_token,
         });
-        redirect('/dashboard');
+        router.push('/dashboard');
       },
-      onError: () => {
+      onError: (error) => {
         form.setError('root', {
           message: 'Failed to register user',
         });
+        toast.error(error.message);
       },
     });
   };

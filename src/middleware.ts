@@ -9,7 +9,10 @@ export async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.find((route) => currentPath.startsWith(route));
 
-  const token = request.cookies.get('access-token')?.value;
+  // const token = request.cookies.get('access-token')?.value;
+  const token = cookieStore.get('access-token')?.value;
+
+  console.log({ token });
 
   const nextRedirect = (path: string) => NextResponse.redirect(new URL(path, request.nextUrl));
 
