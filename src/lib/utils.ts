@@ -1,8 +1,19 @@
+import { ForwardRefExoticComponent, RefAttributes } from 'react';
+
 import { clsx, type ClassValue } from 'clsx';
-import { Github, Link, MessageCircle, Twitter } from 'lucide-react';
+import {
+  CircleAlert,
+  CircleCheck,
+  Github,
+  Link,
+  LucideProps,
+  MessageCircle,
+  TriangleAlert,
+  Twitter,
+} from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 
-import { ActivityIndicator, SecurityCheckKeys } from './_types';
+import { ActivityIndicator, SecurityCheckColor, SecurityCheckKeys } from './_types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -30,6 +41,9 @@ export const socialIcons = {
 } as const;
 
 export const securityCheckLabels: Record<SecurityCheckKeys, string> = {
+  buy_tax: 'Buy Tax',
+  sell_tax: 'Sell Tax',
+  major_holders_ratio: 'Major Holders Ratio',
   ownership_not_renounced: 'Ownership Not Renounced',
   cannot_buy: 'Can not Buy',
   is_honeypot: 'Is Honeypot',
@@ -40,7 +54,6 @@ export const securityCheckLabels: Record<SecurityCheckKeys, string> = {
   hidden_owner: 'Hidden Owner',
   can_self_destruct: 'Can Self Destruct',
   proxy_contract: 'Proxy Contract',
-
   is_anti_whale: 'Anti Whale',
   cannot_sell_all: 'Can not Sell',
   can_modify_balance: 'Modify Balance',
@@ -51,8 +64,29 @@ export const securityCheckLabels: Record<SecurityCheckKeys, string> = {
   anti_whale_modifiable: 'Anti Whale Modifiable',
 };
 
+export const securityCheckIcons: Record<
+  SecurityCheckColor,
+  {
+    Icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+    color: string;
+  }
+> = {
+  red: {
+    Icon: TriangleAlert,
+    color: 'text-red-600',
+  },
+  orange: {
+    Icon: CircleAlert,
+    color: 'text-orange-300',
+  },
+  green: {
+    Icon: CircleCheck,
+    color: 'text-red-600',
+  },
+};
+
 export const activityIndicatorColors: Record<ActivityIndicator, string> = {
-  High: 'green',
-  Medium: 'yellow',
-  Low: 'red',
+  high: 'green',
+  medium: 'yellow',
+  low: 'red',
 };

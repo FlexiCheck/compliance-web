@@ -12,8 +12,8 @@ type Props = {
 };
 
 export const CommunityInfo = ({ communityInfo: { twitter, telegram } }: Props) => {
-  const twitterActivity = twitter.activity_indicator;
-  const telegramActivity = telegram.activity_indicator;
+  const twitterActivity = twitter?.activity_indicator;
+  const telegramActivity = telegram?.activity_indicator;
 
   return (
     <DetailsAccordion title="Community Info">

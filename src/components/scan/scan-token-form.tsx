@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { ScanRouteProtection } from '@/components/scan/scan-route-protection';
 import { ScanningLoader } from '@/components/scan/scanning-loader';
 import { Button } from '@/components/ui/button';
 import {
@@ -64,7 +65,12 @@ export const ScanTokenForm = () => {
   };
 
   if ($scanToken.isPending) {
-    return <ScanningLoader tokenName={symbol} />;
+    return (
+      <>
+        <ScanRouteProtection isScanning={$scanToken.isPending} />
+        <ScanningLoader tokenName={symbol} />
+      </>
+    );
   }
 
   return (

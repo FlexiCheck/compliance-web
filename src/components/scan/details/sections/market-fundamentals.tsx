@@ -54,37 +54,27 @@ export const MarketFundamentals = ({
     <DetailsAccordion title="Market Fundamentals">
       <div className="space-y-5">
         <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
-          {token_price && (
-            <DetailsItem title="Current Price">
-              <p className="text-2xl font-bold text-blue-600">{token_price}</p>
-            </DetailsItem>
-          )}
+          <DetailsItem title="Current Price">
+            <p className="text-2xl font-bold text-blue-600">{token_price ?? 'N/A'}</p>
+          </DetailsItem>
 
-          {low && (
-            <DetailsItem title="24h Low">
-              <p className="text-2xl font-bold text-red-600">{low}</p>
-            </DetailsItem>
-          )}
+          <DetailsItem title="24h Low">
+            <p className="text-2xl font-bold text-red-600">{low ?? 'N/A'}</p>
+          </DetailsItem>
 
-          {high && (
-            <DetailsItem title="24h High">
-              <p className="text-2xl font-bold text-green-600">{high}</p>
-            </DetailsItem>
-          )}
+          <DetailsItem title="24h High">
+            <p className="text-2xl font-bold text-green-600">{high ?? 'N/A'}</p>
+          </DetailsItem>
         </div>
 
         <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
-          {volume_24h && (
-            <DetailsItem title="24h Volume">
-              <p className="text-2xl font-bold text-purple-600">{volume_24h}</p>
-            </DetailsItem>
-          )}
+          <DetailsItem title="24h Volume">
+            <p className="text-2xl font-bold text-purple-600">{volume_24h ?? 'N/A'}</p>
+          </DetailsItem>
 
-          {market_cap && (
-            <DetailsItem title="Market Cap">
-              <p className="text-2xl font-bold text-green-600">{market_cap}</p>
-            </DetailsItem>
-          )}
+          <DetailsItem title="Market Cap">
+            <p className="text-2xl font-bold text-green-600">{market_cap ?? 'N/A'}</p>
+          </DetailsItem>
         </div>
 
         {volume_by_exchange_type_24h && (
@@ -109,7 +99,7 @@ export const MarketFundamentals = ({
 
         <DetailsItem title="CEX Information">
           <div className="space-y-3 mt-2">
-            {cex_info && cex_info.map((item) => <CexCard key={item.name} {...item} />)}
+            {cex_info ? cex_info.map((item) => <CexCard key={item.name} {...item} />) : '-'}
           </div>
         </DetailsItem>
 

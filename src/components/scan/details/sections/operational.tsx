@@ -70,7 +70,7 @@ export const Operational = ({
                 <LucideExternalLink size={16} /> View details
               </Link>
             ) : (
-              '-'
+              <p className="text-lg font-semibold text-gray-800">N/A</p>
             )}
           </DetailsItem>
         </div>

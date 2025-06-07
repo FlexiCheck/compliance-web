@@ -1,15 +1,23 @@
-import { SecurityCheckKeys, TokenReviewPAnalysis } from '@/lib/_types';
-import { securityCheckLabels } from '@/lib/utils';
+import { SecurityCheckColor, SecurityCheckKeys, TokenReviewPAnalysis } from '@/lib/_types';
+import { securityCheckIcons, securityCheckLabels } from '@/lib/utils';
 
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
-const SecurityCheckItem = ({ title, checked }: { title: string; checked: boolean }) => {
+const SecurityCheckItem = ({
+  title,
+  checkItem,
+}: {
+  title: string;
+  checkItem: SecurityCheckColor;
+}) => {
+  const { Icon, color } = securityCheckIcons[checkItem];
+
   return (
     <div className="flex items-center justify-between">
       <span className="font-medium text-base">{title}</span>
       <div className="flex items-center gap-2">
-        <span className="font-bold">{checked ? 'Yes' : 'No'}</span>
+        <Icon size={16} className={color} />
       </div>
     </div>
   );
@@ -20,14 +28,7 @@ type Props = {
 };
 
 export const TokenReview = ({
-  tokenReview: {
-    contract,
-    major_holders_ratio,
-    top_10_holders_ratio,
-    buy_tax,
-    sell_tax,
-    ...securityChecks
-  },
+  tokenReview: { contract, top_10_holders_ratio, ...securityChecks },
 }: Props) => {
   const securityCheckArray = Object.entries(securityChecks);
 
@@ -40,36 +41,9 @@ export const TokenReview = ({
           </div>
         </DetailsItem>
 
-        <div className="grid grid-cols-2 gap-5">
-          <DetailsItem
-            title="Major Holders Ratio"
-            subContent={
-              <p className="text-xs text-gray-500 mt-1">
-                Check if the current holding is centralized
-              </p>
-            }
-          >
-            <p className="text-lg font-semibold text-orange-600">{major_holders_ratio ?? 'N/A'}</p>
-          </DetailsItem>
-
-          <DetailsItem title="Top 10 Holders Ratio">
-            <p className="text-lg font-semibold text-orange-600">{top_10_holders_ratio ?? 'N/A'}</p>
-          </DetailsItem>
-
-          <DetailsItem
-            title="Buy Tax"
-            subContent={<p className="text-xs text-gray-500 mt-1">Above 5% is considered high</p>}
-          >
-            <p className="text-lg font-semibold text-green-600">{buy_tax ?? 'N/A'}</p>
-          </DetailsItem>
-
-          <DetailsItem
-            title="Sell Tax"
-            subContent={<p className="text-xs text-gray-500 mt-1">Above 5% is considered high</p>}
-          >
-            <p className="text-lg font-semibold text-green-600">{sell_tax ?? 'N/A'}</p>
-          </DetailsItem>
-        </div>
+        <DetailsItem title="Top 10 Holders Ratio">
+          <p className="text-lg font-semibold text-orange-600">{top_10_holders_ratio ?? 'N/A'}</p>
+        </DetailsItem>
 
         <DetailsItem title="Security Checks">
           <div className="space-y-2 mt-2">
@@ -78,7 +52,7 @@ export const TokenReview = ({
 
               return (
                 value !== null &&
-                label && <SecurityCheckItem key={key} title={label} checked={value} />
+                label && <SecurityCheckItem key={key} title={label} checkItem={value} />
               );
             })}
           </div>
