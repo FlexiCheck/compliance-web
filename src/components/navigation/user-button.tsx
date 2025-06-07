@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 
 import { logoutAction, removeTokenCookies } from '@/server/actions';
 
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Avatar, AvatarFallback } from '../ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,9 +24,10 @@ export const UserButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>MM</AvatarFallback>
+        <Avatar className="cursor-pointer w-10 h-10">
+          <AvatarFallback>
+            <User size={18} />
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

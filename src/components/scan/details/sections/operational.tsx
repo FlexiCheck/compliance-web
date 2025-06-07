@@ -41,7 +41,7 @@ export const Operational = ({
           </div>
         </DetailsItem>
 
-        <div className="flex items-stretch gap-5">
+        <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
           <DetailsItem title="Active Users (24h)">
             <p className="text-lg font-semibold text-blue-600">{active_users_24h ?? 'N/A'}</p>
           </DetailsItem>
@@ -70,7 +70,7 @@ export const Operational = ({
                 <LucideExternalLink size={16} /> View details
               </Link>
             ) : (
-              '-'
+              <p className="text-lg font-semibold text-gray-800">N/A</p>
             )}
           </DetailsItem>
         </div>

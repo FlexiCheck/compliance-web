@@ -1,4 +1,4 @@
-import { ScanTokenForm } from "@/components/scan";
+import { ScanTokenForm } from '@/components/scan';
 
 const ScanTokenPage = () => {
   return (

@@ -11,26 +11,31 @@ export type TokenOverviewAnalysis = Nullable<{
   description: string;
 }>;
 
-export type SecurityChecks = {
-  ownership_not_renounced: boolean;
-  cannot_buy: boolean;
-  is_honeypot: boolean;
-  is_mintable: boolean;
-  has_blacklist: boolean;
-  has_whitelist: boolean;
-  tax_can_be_modified: boolean;
-  hidden_owner: boolean;
-  can_self_destruct: boolean;
-  proxy_contract: boolean;
+export type SecurityCheckColor = 'red' | 'orange' | 'green';
 
-  is_anti_whale: boolean;
-  cannot_sell_all: boolean;
-  can_modify_balance: boolean;
-  has_external_calls: boolean;
-  can_regain_ownership: boolean;
-  is_transfer_cooldown: boolean;
-  is_transfer_pausable: boolean;
-  anti_whale_modifiable: boolean;
+export type SecurityChecks = {
+  buy_tax: SecurityCheckColor;
+  sell_tax: SecurityCheckColor;
+  major_holders_ratio: SecurityCheckColor;
+  ownership_not_renounced: SecurityCheckColor;
+  cannot_buy: SecurityCheckColor;
+  is_honeypot: SecurityCheckColor;
+  is_mintable: SecurityCheckColor;
+  has_blacklist: SecurityCheckColor;
+  has_whitelist: SecurityCheckColor;
+  tax_can_be_modified: SecurityCheckColor;
+  hidden_owner: SecurityCheckColor;
+  can_self_destruct: SecurityCheckColor;
+  proxy_contract: SecurityCheckColor;
+
+  is_anti_whale: SecurityCheckColor;
+  cannot_sell_all: SecurityCheckColor;
+  can_modify_balance: SecurityCheckColor;
+  has_external_calls: SecurityCheckColor;
+  can_regain_ownership: SecurityCheckColor;
+  is_transfer_cooldown: SecurityCheckColor;
+  is_transfer_pausable: SecurityCheckColor;
+  anti_whale_modifiable: SecurityCheckColor;
 };
 
 export type SecurityCheckKeys = keyof SecurityChecks;
@@ -38,10 +43,7 @@ export type SecurityCheckKeys = keyof SecurityChecks;
 export type TokenReviewPAnalysis = Nullable<
   {
     contract: string;
-    major_holders_ratio: string;
     top_10_holders_ratio: string;
-    buy_tax: string;
-    sell_tax: string;
   } & SecurityChecks
 >;
 
@@ -107,7 +109,7 @@ export type TokenHolderAnalysis = Nullable<{
   whale_movement_indicator: string;
 }>;
 
-export type ActivityIndicator = 'High' | 'Medium' | 'Low';
+export type ActivityIndicator = 'high' | 'medium' | 'low';
 
 type CommunityInfoTwitter = Nullable<{
   activity_indicator: ActivityIndicator;

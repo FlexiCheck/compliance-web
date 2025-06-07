@@ -22,7 +22,7 @@ export const DomainInfo = ({
   return (
     <DetailsAccordion title="Domain Info">
       <div className="w-full space-y-5">
-        <div className="flex items-stretch gap-5">
+        <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
           <DetailsItem title="Domain">
             <p className="text-lg font-semibold text-blue-600">{domain ?? 'N/A'}</p>
           </DetailsItem>
@@ -35,7 +35,7 @@ export const DomainInfo = ({
           </DetailsItem>
         </div>
 
-        <div className="flex items-stretch gap-5">
+        <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
           <DetailsItem title="Registered Date">
             <p className="text-sm font-semibold text-blue-600">{formatDate(registered_date)}</p>
           </DetailsItem>
@@ -51,8 +51,13 @@ export const DomainInfo = ({
 
         <DetailsItem title="Name Servers">
           {name_servers && name_servers.length > 0 ? (
-            // Todo render list of nameservers
-            <p className="text-sm text-gray-500 italic">List of nameservers</p>
+            <ul className="list-disc list-inside space-y-1">
+              {name_servers.map((server, index) => (
+                <li key={index} className="text-sm text-gray-600">
+                  {server}
+                </li>
+              ))}
+            </ul>
           ) : (
             <p className="text-sm text-gray-500 italic">No name servers available</p>
           )}

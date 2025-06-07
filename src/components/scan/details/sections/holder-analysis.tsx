@@ -13,7 +13,7 @@ export const HolderAnalysis = ({
 }: Props) => {
   return (
     <DetailsAccordion title="Token holder Analysis">
-      <div className="w-full flex items-stretch gap-5">
+      <div className="w-full flex items-stretch gap-5 md:flex-nowrap flex-wrap">
         <DetailsItem title="Total Holders">
           <p className="text-2xl font-bold text-blue-600">{formatNumber(total_holders)}</p>
         </DetailsItem>
