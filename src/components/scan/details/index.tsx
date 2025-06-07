@@ -36,30 +36,30 @@ export const TokenDetails = () => {
   }
 
   const report = $report.data;
-  const certik_data = report.certik_data;
+  const certik_data = report?.certik_data;
 
   return (
     <div className="w-full h-full space-y-5">
       <TokenOverview
         token_overview={{
           ticker: report.token_symbol,
-          ...(certik_data.token_overview ?? {}),
+          ...(certik_data?.token_overview ?? {}),
         }}
       />
 
       <Accordion type="single" collapsible>
         <div className="space-y-5 pb-8">
-          <TokenReview tokenReview={certik_data.token_review ?? {}} />
+          <TokenReview tokenReview={certik_data?.token_review ?? {}} />
           <MarketFundamentals
-            marketFundamentals={certik_data.market_fundamentals ?? {}}
-            fundamentals={certik_data.fundamentals ?? {}}
+            marketFundamentals={certik_data?.market_fundamentals ?? {}}
+            fundamentals={certik_data?.fundamentals ?? {}}
           />
-          <DomainInfo domainInfo={report.domain_info ?? {}} />
-          <Operational operational={certik_data.operational ?? {}} />
+          <DomainInfo domainInfo={report?.domain_info ?? {}} />
+          <Operational operational={certik_data?.operational ?? {}} />
           {/* Coming soon */}
           <AdverseMedia adverseMedia={null} />
-          <HolderAnalysis holderAnalysis={certik_data.token_holder_analysis ?? {}} />
-          <CommunityInfo communityInfo={certik_data.community_info ?? {}} />
+          <HolderAnalysis holderAnalysis={certik_data?.token_holder_analysis ?? {}} />
+          <CommunityInfo communityInfo={certik_data?.community_info ?? {}} />
         </div>
       </Accordion>
     </div>

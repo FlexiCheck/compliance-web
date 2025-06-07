@@ -28,7 +28,7 @@ export const Navigation = () => {
           </SheetContent>
         </Sheet>
         <Link className="text-2xl font-bold text-text-main hidden md:block" href="/dashboard">
-          Compilance
+          Compliance
         </Link>
       </div>
 

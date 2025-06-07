@@ -28,6 +28,7 @@ export const setCookieTokens = async ({
     sameSite: 'lax',
     path: '/',
     expires: new Date(Date.now() + duration),
+    maxAge: Math.floor(duration / 1000),
   } as const;
 
   cookieStore.set({

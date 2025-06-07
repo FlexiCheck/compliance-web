@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Compilance',
+  title: 'Compliance',
   description:
     'The digital identity check platform designed to verify and monitor key risk signals for both crypto, fintech and VC entities',
 };
