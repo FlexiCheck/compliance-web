@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie';
+import { cookies } from 'next/headers';
 
 export const TOKEN_KEYS = {
   accessToken: 'access-token',
@@ -6,25 +6,38 @@ export const TOKEN_KEYS = {
 } as const;
 
 const COOKIE_OPTIONS = {
-  expires: 1, // 1 day
+  httpOnly: true,
+  secure: true,
   path: '/',
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax' as const,
+  maxAge: 24 * 60 * 60, // 1 day in seconds
+} as const;
+
+export const setAuthCookies = async (accessToken: string, refreshToken: string) => {
+  const cookieStore = await cookies();
+
+  cookieStore.set({
+    name: TOKEN_KEYS.accessToken,
+    value: accessToken,
+    ...COOKIE_OPTIONS,
+  });
+
+  cookieStore.set({
+    name: TOKEN_KEYS.refreshToken,
+    value: refreshToken,
+    ...COOKIE_OPTIONS,
+  });
 };
 
-export const setAuthCookies = (accessToken: string, refreshToken: string) => {
-  Cookies.set(TOKEN_KEYS.accessToken, accessToken, COOKIE_OPTIONS);
-  Cookies.set(TOKEN_KEYS.refreshToken, refreshToken, COOKIE_OPTIONS);
+export const removeAuthCookies = async () => {
+  const cookieStore = await cookies();
+  cookieStore.delete(TOKEN_KEYS.accessToken);
+  cookieStore.delete(TOKEN_KEYS.refreshToken);
 };
 
-export const removeAuthCookies = () => {
-  Cookies.remove(TOKEN_KEYS.accessToken, { path: '/' });
-  Cookies.remove(TOKEN_KEYS.refreshToken, { path: '/' });
-};
-
-export const getAuthTokens = () => {
+export const getAuthTokens = async () => {
+  const cookieStore = await cookies();
   return {
-    accessToken: Cookies.get(TOKEN_KEYS.accessToken),
-    refreshToken: Cookies.get(TOKEN_KEYS.refreshToken),
+    accessToken: cookieStore.get(TOKEN_KEYS.accessToken)?.value,
+    refreshToken: cookieStore.get(TOKEN_KEYS.refreshToken)?.value,
   };
 };
