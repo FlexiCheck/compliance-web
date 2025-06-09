@@ -72,7 +72,10 @@ export const registerAction = async (input: AuthActionInput) => {
 };
 
 export const getUserAction = async () => {
-  return await request(`${baseUrl}/auth/me`).get({}, TUser);
+  const response = await request(`${baseUrl}/auth/me`).get({}, TUser);
+  console.log('getUserAction: ', { response });
+
+  return response;
 };
 
 export const refreshTokenAction = async () => {
@@ -89,6 +92,8 @@ export const refreshTokenAction = async () => {
     },
     TAuthResponse
   );
+
+  console.log('in refreshTokenAction: ', { response });
 
   if (response.access_token && response.refresh_token) {
     await setCookieToken(TokenKeys.accessToken, response.access_token);
