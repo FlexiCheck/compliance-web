@@ -13,34 +13,17 @@ enum TokenKeys {
 const duration = 24 * 60 * 60 * 1000;
 const baseUrl = process.env.API_BASE_URL;
 
-export const setCookieTokens = async ({
-  accessToken,
-  refreshToken,
-}: {
-  accessToken: string;
-  refreshToken: string;
-}) => {
+export const setCookieToken = async (token: string, value: string) => {
   const cookieStore = await cookies();
 
-  const cookieOptions = {
+  cookieStore.set({
+    name: token,
+    value,
     httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
     path: '/',
-    expires: new Date(Date.now() + duration),
     maxAge: Math.floor(duration / 1000),
-  } as const;
-
-  cookieStore.set({
-    name: TokenKeys.accessToken,
-    value: accessToken,
-    ...cookieOptions,
-  });
-
-  cookieStore.set({
-    name: TokenKeys.refreshToken,
-    value: refreshToken,
-    ...cookieOptions,
   });
 };
 
@@ -56,36 +39,41 @@ type AuthActionInput = {
 };
 
 export const loginAction = async (input: AuthActionInput) => {
-  return await request(`${baseUrl}/auth/login`).post(
+  const response = await request(`${baseUrl}/auth/login`).post(
     {
       body: input,
       withoutAuth: true,
     },
     TAuthResponse
   );
+
+  if (response.access_token && response.refresh_token) {
+    await setCookieToken(TokenKeys.accessToken, response.access_token);
+    await setCookieToken(TokenKeys.refreshToken, response.refresh_token);
+  }
+
+  return response;
 };
 
 export const registerAction = async (input: AuthActionInput) => {
-  return await request(`${baseUrl}/auth/register`).post(
+  const response = await request(`${baseUrl}/auth/register`).post(
     {
       body: input,
       withoutAuth: true,
     },
     TAuthResponse
   );
-};
 
-export const getUserAction = async (token?: string) => {
-  console.log('In getUserAction: ', token);
-
-  const headers = new Headers();
-  if (token) {
-    headers.set('Authorization', `Bearer ${token}`);
+  if (response.access_token && response.refresh_token) {
+    await setCookieToken(TokenKeys.accessToken, response.access_token);
+    await setCookieToken(TokenKeys.refreshToken, response.refresh_token);
   }
 
-  const options = token ? { headers } : {};
+  return response;
+};
 
-  return await request(`${baseUrl}/auth/me`).get(options, TUser);
+export const getUserAction = async () => {
+  return await request(`${baseUrl}/auth/me`).get({}, TUser);
 };
 
 export const refreshTokenAction = async () => {
@@ -95,15 +83,23 @@ export const refreshTokenAction = async () => {
 
   headers.set('Authorization', `Bearer ${refreshToken}`);
 
-  return await request(`${baseUrl}/auth/refresh`).post(
+  const response = await request(`${baseUrl}/auth/refresh`).post(
     {
       withoutAuth: true,
       headers,
     },
     TAuthResponse
   );
+
+  if (response.access_token && response.refresh_token) {
+    await setCookieToken(TokenKeys.accessToken, response.access_token);
+    await setCookieToken(TokenKeys.refreshToken, response.refresh_token);
+  }
+
+  return response;
 };
 
 export const logoutAction = async () => {
+  await removeTokenCookies();
   return await request(`${baseUrl}/auth/logout`).post({});
 };

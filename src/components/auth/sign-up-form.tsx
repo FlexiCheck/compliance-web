@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { registerAction, setCookieTokens } from '@/server/actions';
+import { registerAction } from '@/server/actions';
 
 import { AuthForm } from './auth-form';
 
@@ -49,11 +49,11 @@ export const SignUpForm = () => {
 
   const onSubmit = (values: FormValues) => {
     $register.mutate(values, {
-      onSuccess: async (data) => {
-        await setCookieTokens({
-          accessToken: data.access_token,
-          refreshToken: data.refresh_token,
-        });
+      onSuccess: async () => {
+        // await setCookieTokens({
+        //   accessToken: data.access_token,
+        //   refreshToken: data.refresh_token,
+        // });
         router.push('/dashboard');
       },
       onError: (error) => {
