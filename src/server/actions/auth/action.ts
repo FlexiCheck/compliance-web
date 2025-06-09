@@ -76,17 +76,16 @@ export const registerAction = async (input: AuthActionInput) => {
 };
 
 export const getUserAction = async (token?: string) => {
-  console.log('In getUserAction: ');
+  console.log('In getUserAction: ', token);
+
   const headers = new Headers();
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
   }
-  return await request(`${baseUrl}/auth/me`).get(
-    {
-      ...(headers && { headers }),
-    },
-    TUser
-  );
+
+  const options = token ? { headers } : {};
+
+  return await request(`${baseUrl}/auth/me`).get(options, TUser);
 };
 
 export const refreshTokenAction = async () => {
