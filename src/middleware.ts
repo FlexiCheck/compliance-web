@@ -23,17 +23,20 @@ export async function middleware(request: NextRequest) {
   if (accessToken) {
     try {
       const user = await getUserAction();
+      console.log({ user });
 
-      if (isProtectedRoute && !user.email) {
+      if (isProtectedRoute && !user?.email) {
         return nextRedirect('/sign-in');
       }
 
-      if (!isProtectedRoute && user.email) {
+      if (!isProtectedRoute && user?.email) {
         return nextRedirect('/dashboard');
       }
-    } catch {
+    } catch (error) {
+      console.log('getUserAction error: ', { error });
       try {
         const refresh = await refreshTokenAction();
+        console.log({ refresh });
 
         if (refresh.access_token && refresh.refresh_token) {
           const response = NextResponse.next();
@@ -65,7 +68,8 @@ export async function middleware(request: NextRequest) {
         } else {
           return nextRedirect('/sign-in');
         }
-      } catch {
+      } catch (error) {
+        console.log('refreshTokenAction error: ', { error });
         if (isProtectedRoute) {
           return nextRedirect('/sign-in');
         }
