@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
 
   if (token) {
     try {
-      const user = await getUserAction();
+      const user = await getUserAction(token);
       console.log({ user, isProtectedRoute });
 
       if (isProtectedRoute && !user.email) {
