@@ -16,11 +16,9 @@ const baseUrl = process.env.API_BASE_URL;
 export const setCookieToken = async (token: string, value: string) => {
   const cookieStore = await cookies();
 
-  cookieStore.set({
-    name: token,
-    value,
+  cookieStore.set(token, value, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    // secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
     path: '/',
     maxAge: Math.floor(duration / 1000),
