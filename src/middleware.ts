@@ -43,7 +43,8 @@ export async function middleware(request: NextRequest) {
             name: TOKEN_KEYS.accessToken,
             value: refresh.access_token,
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: false,
+            // secure: process.env.NODE_ENV === 'production',
             path: '/',
             maxAge: 24 * 60 * 60, // 1 day in seconds
             sameSite: 'lax',
@@ -53,7 +54,8 @@ export async function middleware(request: NextRequest) {
             name: TOKEN_KEYS.refreshToken,
             value: refresh.refresh_token,
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: false,
+            // secure: process.env.NODE_ENV === 'production',
             path: '/',
             maxAge: 24 * 60 * 60, // 1 day in seconds
             sameSite: 'lax',
