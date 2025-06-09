@@ -29,6 +29,8 @@ export const createRequest = <Path extends string>(method: RequestMethods, url: 
 
     const accessToken = cookieStore.get('access-token')?.value;
 
+    console.log('in create-request: ', { accessToken });
+
     const headers = new Headers(input.headers);
 
     const inputType = input.type ?? 'json';
