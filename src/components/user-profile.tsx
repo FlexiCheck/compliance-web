@@ -7,7 +7,7 @@ import { getUserAction } from '@/server/actions';
 export const UserProfile = () => {
   const $user = useQuery({
     queryKey: ['user-details'],
-    queryFn: getUserAction,
+    queryFn: () => getUserAction(),
   });
 
   return (
