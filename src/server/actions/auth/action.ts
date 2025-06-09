@@ -18,6 +18,7 @@ export const setCookieToken = async (token: string, value: string) => {
 
   cookieStore.set(token, value, {
     httpOnly: true,
+    secure: false,
     // secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
     path: '/',
