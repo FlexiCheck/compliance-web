@@ -7,7 +7,7 @@ export const TOKEN_KEYS = {
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: true,
+  secure: process.env.NODE_ENV === 'production',
   path: '/',
   maxAge: 24 * 60 * 60, // 1 day in seconds
 } as const;

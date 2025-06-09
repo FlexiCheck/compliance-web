@@ -1,18 +1,15 @@
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getUserAction, refreshTokenAction } from './server/actions';
 
 export async function middleware(request: NextRequest) {
-  const cookieStore = await cookies();
   const protectedRoutes = ['/dashboard'];
   const currentPath = request.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.find((route) => currentPath.startsWith(route));
 
-  // const token = request.cookies.get('access-token')?.value;
-  const token = cookieStore.get('access-token')?.value;
+  const token = request.cookies.get('access-token')?.value;
 
-  console.log({ token });
+  console.log({ token, cookies: request.cookies });
 
   const nextRedirect = (path: string) => NextResponse.redirect(new URL(path, request.nextUrl));
 
@@ -36,7 +33,16 @@ export async function middleware(request: NextRequest) {
         const refresh = await refreshTokenAction();
 
         if (refresh.access_token) {
-          cookieStore.set('access-token', refresh.access_token);
+          const response = NextResponse.next();
+          response.cookies.set({
+            name: 'access-token',
+            value: refresh.access_token,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            maxAge: 24 * 60 * 60, // 1 day in seconds
+          });
+          return response;
         } else {
           return nextRedirect('/sign-in');
         }
