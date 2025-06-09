@@ -13,7 +13,6 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = protectedRoutes.find((route) => currentPath.startsWith(route));
 
   const accessToken = request.cookies.get(TOKEN_KEYS.accessToken)?.value;
-  // const refreshToken = request.cookies.get(TOKEN_KEYS.refreshToken)?.value;
 
   const nextRedirect = (path: string) => NextResponse.redirect(new URL(path, request.nextUrl));
 
