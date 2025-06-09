@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { loginAction, setCookieTokens } from '@/server/actions';
+import { loginAction } from '@/server/actions';
 
 import { AuthForm } from './auth-form';
 
@@ -34,11 +34,11 @@ export const SignInForm = () => {
 
   const onSubmit = async (values: FormValues) => {
     $login.mutate(values, {
-      onSuccess: async (data) => {
-        await setCookieTokens({
-          accessToken: data.access_token,
-          refreshToken: data.refresh_token,
-        });
+      onSuccess: async () => {
+        // await setCookieTokens({
+        //   accessToken: data.access_token,
+        //   refreshToken: data.refresh_token,
+        // });
         router.push('/dashboard');
       },
       onError: () => {

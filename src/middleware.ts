@@ -2,25 +2,28 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getUserAction, refreshTokenAction } from './server/actions';
 
+const TOKEN_KEYS = {
+  accessToken: 'access-token',
+  refreshToken: 'refresh-token',
+} as const;
+
 export async function middleware(request: NextRequest) {
   const protectedRoutes = ['/dashboard'];
   const currentPath = request.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.find((route) => currentPath.startsWith(route));
 
-  const token = request.cookies.get('access-token')?.value;
-
-  console.log({ token, cookies: request.cookies });
+  const accessToken = request.cookies.get(TOKEN_KEYS.accessToken)?.value;
+  // const refreshToken = request.cookies.get(TOKEN_KEYS.refreshToken)?.value;
 
   const nextRedirect = (path: string) => NextResponse.redirect(new URL(path, request.nextUrl));
 
-  if (!token && isProtectedRoute) {
+  if (!accessToken && isProtectedRoute) {
     return nextRedirect('/sign-in');
   }
 
-  if (token) {
+  if (accessToken) {
     try {
-      const user = await getUserAction(token);
-      console.log({ user, isProtectedRoute });
+      const user = await getUserAction();
 
       if (isProtectedRoute && !user.email) {
         return nextRedirect('/sign-in');
@@ -31,28 +34,38 @@ export async function middleware(request: NextRequest) {
       }
     } catch {
       try {
-        console.log('in refresh!');
         const refresh = await refreshTokenAction();
-        console.log({ refresh });
 
-        if (refresh.access_token) {
+        if (refresh.access_token && refresh.refresh_token) {
           const response = NextResponse.next();
+
+          // Set both tokens
           response.cookies.set({
-            name: 'access-token',
+            name: TOKEN_KEYS.accessToken,
             value: refresh.access_token,
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             path: '/',
             maxAge: 24 * 60 * 60, // 1 day in seconds
+            sameSite: 'lax',
           });
+
+          response.cookies.set({
+            name: TOKEN_KEYS.refreshToken,
+            value: refresh.refresh_token,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            maxAge: 24 * 60 * 60, // 1 day in seconds
+            sameSite: 'lax',
+          });
+
           return response;
         } else {
-          console.log('refresh no token');
           return nextRedirect('/sign-in');
         }
       } catch {
         if (isProtectedRoute) {
-          console.log('refresh catch');
           return nextRedirect('/sign-in');
         }
       }

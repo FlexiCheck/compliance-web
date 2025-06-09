@@ -9,7 +9,7 @@ const ProfilePage = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['user-details'],
-    queryFn: () => getUserAction(),
+    queryFn: getUserAction,
   });
 
   return (
