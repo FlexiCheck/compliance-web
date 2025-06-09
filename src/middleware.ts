@@ -20,6 +20,7 @@ export async function middleware(request: NextRequest) {
   if (token) {
     try {
       const user = await getUserAction();
+      console.log({ user, isProtectedRoute });
 
       if (isProtectedRoute && !user.email) {
         return nextRedirect('/sign-in');
@@ -30,7 +31,9 @@ export async function middleware(request: NextRequest) {
       }
     } catch {
       try {
+        console.log('in refresh!');
         const refresh = await refreshTokenAction();
+        console.log({ refresh });
 
         if (refresh.access_token) {
           const response = NextResponse.next();
@@ -44,10 +47,12 @@ export async function middleware(request: NextRequest) {
           });
           return response;
         } else {
+          console.log('refresh no token');
           return nextRedirect('/sign-in');
         }
       } catch {
         if (isProtectedRoute) {
+          console.log('refresh catch');
           return nextRedirect('/sign-in');
         }
       }
