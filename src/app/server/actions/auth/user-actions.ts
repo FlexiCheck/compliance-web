@@ -1,6 +1,6 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import 'server-only';
 
 import { TOKEN_KEYS } from '@/lib/cookies';
 import { request } from '@/lib/request';
@@ -16,9 +16,7 @@ export const getUserAction = async () => {
   return response;
 };
 
-export const refreshTokenAction = async () => {
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get(TOKEN_KEYS.refreshToken)?.value;
+export const refreshTokenAction = async (refreshToken?: string) => {
   const headers = new Headers();
 
   headers.set('Authorization', `Bearer ${refreshToken}`);

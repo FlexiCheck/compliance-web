@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { registerAction } from '@/server/actions';
+import { registerAction } from '@/app/server/actions';
 
 import { AuthForm } from './auth-form';
 

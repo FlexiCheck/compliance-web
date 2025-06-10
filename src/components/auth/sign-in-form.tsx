@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { loginAction } from '@/server/actions';
+import { loginAction } from '@/app/server/actions';
 
 import { AuthForm } from './auth-form';
 

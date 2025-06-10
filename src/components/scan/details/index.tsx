@@ -2,8 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import { getCachedTokenReport } from '@/app/server/actions/token';
 import { Accordion } from '@/components/ui/accordion';
-import { getCachedTokenReport } from '@/server/actions/token';
 
 import { DetailsSkeleton } from './details-skeleton';
 import {

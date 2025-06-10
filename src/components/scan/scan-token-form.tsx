@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { scanToken } from '@/app/server/actions/token';
 import { ScanRouteProtection } from '@/components/scan/scan-route-protection';
 import { ScanningLoader } from '@/components/scan/scanning-loader';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { scanToken } from '@/server/actions/token';
 
 const formSchema = z.object({
   symbol: z.string().min(1).trim(),

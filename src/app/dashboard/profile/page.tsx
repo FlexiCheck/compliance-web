@@ -1,8 +1,8 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
+import { getUserAction } from '@/app/server/actions';
 import { UserProfile } from '@/components/user-profile';
 import { getQueryClient } from '@/lib/query';
-import { getUserAction } from '@/server/actions';
 
 const ProfilePage = async () => {
   const queryClient = getQueryClient();

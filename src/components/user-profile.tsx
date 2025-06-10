@@ -1,8 +1,8 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 
+import { getUserAction } from '@/app/server/actions';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getUserAction } from '@/server/actions';
 
 export const UserProfile = () => {
   const $user = useQuery({

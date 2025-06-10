@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getUserAction, refreshTokenAction } from './server/actions';
+import { getUserAction, refreshTokenAction } from './app/server/actions';
 
 // import { getUserAction, refreshTokenAction } from './server/actions';
 
@@ -15,6 +15,7 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = protectedRoutes.find((route) => currentPath.startsWith(route));
 
   const accessToken = request.cookies.get(TOKEN_KEYS.accessToken)?.value;
+  const refreshToken = request.cookies.get(TOKEN_KEYS.refreshToken)?.value;
   // console.log('Cookies in middleware:', request.cookies.getAll());
   // console.log({ env: process.env.NODE_ENV });
 
@@ -39,7 +40,7 @@ export async function middleware(request: NextRequest) {
     } catch (error) {
       console.log('getUserAction error: ', { error });
       try {
-        const refresh = await refreshTokenAction();
+        const refresh = await refreshTokenAction(refreshToken);
         console.log({ refresh });
 
         if (refresh.access_token && refresh.refresh_token) {
