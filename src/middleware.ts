@@ -13,6 +13,8 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = protectedRoutes.find((route) => currentPath.startsWith(route));
 
   const accessToken = request.cookies.get(TOKEN_KEYS.accessToken)?.value;
+  console.log('Cookies in middleware:', request.cookies.getAll());
+  console.log({ env: process.env.NODE_ENV });
 
   const nextRedirect = (path: string) => NextResponse.redirect(new URL(path, request.nextUrl));
 
@@ -45,9 +47,8 @@ export async function middleware(request: NextRequest) {
           response.cookies.set({
             name: TOKEN_KEYS.accessToken,
             value: refresh.access_token,
-            httpOnly: false,
-            secure: false,
-            // secure: process.env.NODE_ENV === 'production',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
             path: '/',
             maxAge: 24 * 60 * 60, // 1 day in seconds
             sameSite: 'lax',
@@ -56,9 +57,8 @@ export async function middleware(request: NextRequest) {
           response.cookies.set({
             name: TOKEN_KEYS.refreshToken,
             value: refresh.refresh_token,
-            httpOnly: false,
-            secure: false,
-            // secure: process.env.NODE_ENV === 'production',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
             path: '/',
             maxAge: 24 * 60 * 60, // 1 day in seconds
             sameSite: 'lax',

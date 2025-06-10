@@ -48,6 +48,7 @@ export const createRequest = <Path extends string>(method: RequestMethods, url: 
     const requestInit = {
       method,
       body,
+      credentials: 'include' as const,
       headers,
       ...input.requestInit,
       next: {
@@ -59,6 +60,8 @@ export const createRequest = <Path extends string>(method: RequestMethods, url: 
 
     try {
       const res = await fetch(input.query ? `${apiUrl}?${input.query}` : apiUrl, requestInit);
+
+      console.log({ res, json: res?.json(), text: res?.text() });
 
       if (res.status >= 500) {
         const error = await res.json();
