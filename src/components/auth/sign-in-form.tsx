@@ -35,13 +35,10 @@ export const SignInForm = () => {
   const onSubmit = async (values: FormValues) => {
     $login.mutate(values, {
       onSuccess: async () => {
-        // await setCookieTokens({
-        //   accessToken: data.access_token,
-        //   refreshToken: data.refresh_token,
-        // });
         router.push('/dashboard');
       },
-      onError: () => {
+      onError: (error) => {
+        console.log({ error });
         form.setError('root', {
           message: 'Incorrect email or password',
         });

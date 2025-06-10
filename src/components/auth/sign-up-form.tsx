@@ -50,10 +50,6 @@ export const SignUpForm = () => {
   const onSubmit = (values: FormValues) => {
     $register.mutate(values, {
       onSuccess: async () => {
-        // await setCookieTokens({
-        //   accessToken: data.access_token,
-        //   refreshToken: data.refresh_token,
-        // });
         router.push('/dashboard');
       },
       onError: (error) => {

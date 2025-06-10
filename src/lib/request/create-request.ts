@@ -29,8 +29,6 @@ export const createRequest = <Path extends string>(method: RequestMethods, url: 
 
     const accessToken = cookieStore.get('access-token')?.value;
 
-    // console.log('in create-request: ', { accessToken });
-
     const headers = new Headers(input.headers);
 
     const inputType = input.type ?? 'json';
@@ -58,9 +56,11 @@ export const createRequest = <Path extends string>(method: RequestMethods, url: 
 
     const apiUrl = input.params ? generatePath(url, input.params) : url;
 
+    console.log('createRequest: ', { apiUrl, accessToken });
+
     try {
       const res = await fetch(input.query ? `${apiUrl}?${input.query}` : apiUrl, requestInit);
-      console.log({ apiUrl, res });
+      console.log({ res });
 
       if (res.status >= 500) {
         const error = await res.json();

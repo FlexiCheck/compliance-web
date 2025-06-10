@@ -1,9 +1,11 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { AlertCircle } from 'lucide-react';
 
 import { getCachedTokenReport } from '@/app/server/actions/token';
 import { Accordion } from '@/components/ui/accordion';
+import { EmptyState } from '@/components/ui/empty-state';
 
 import { DetailsSkeleton } from './details-skeleton';
 import {
@@ -30,9 +32,11 @@ export const TokenDetails = () => {
 
   if (!$report.data) {
     return (
-      <div className="w-full h-full">
-        <h1>Failed to load report</h1>
-      </div>
+      <EmptyState
+        icon={AlertCircle}
+        title="No Report Available"
+        description="We couldn't find any report data for this token. Please try scanning the token again."
+      />
     );
   }
 

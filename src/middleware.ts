@@ -1,8 +1,8 @@
+'use server';
+
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getUserAction, refreshTokenAction } from './app/server/actions';
-
-// import { getUserAction, refreshTokenAction } from './server/actions';
 
 const TOKEN_KEYS = {
   accessToken: 'access-token',
@@ -16,8 +16,6 @@ export async function middleware(request: NextRequest) {
 
   const accessToken = request.cookies.get(TOKEN_KEYS.accessToken)?.value;
   const refreshToken = request.cookies.get(TOKEN_KEYS.refreshToken)?.value;
-  // console.log('Cookies in middleware:', request.cookies.getAll());
-  // console.log({ env: process.env.NODE_ENV });
 
   const nextRedirect = (path: string) => NextResponse.redirect(new URL(path, request.nextUrl));
 

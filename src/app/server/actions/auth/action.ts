@@ -70,36 +70,6 @@ export const registerAction = async (input: AuthActionInput) => {
   return response;
 };
 
-// export const getUserAction = async () => {
-//   const response = await request(`${baseUrl}/auth/me`).get({}, TUser);
-//   console.log('getUserAction: ', { response });
-
-//   return response;
-// };
-
-// export const refreshTokenAction = async () => {
-//   const cookieStore = await cookies();
-//   const refreshToken = cookieStore.get(TokenKeys.refreshToken)?.value;
-//   const headers = new Headers();
-
-//   headers.set('Authorization', `Bearer ${refreshToken}`);
-
-//   const response = await request(`${baseUrl}/auth/refresh`).post(
-//     {
-//       withoutAuth: true,
-//       headers,
-//     },
-//     TAuthResponse
-//   );
-
-//   if (response.access_token && response.refresh_token) {
-//     await setCookieToken(TokenKeys.accessToken, response.access_token);
-//     await setCookieToken(TokenKeys.refreshToken, response.refresh_token);
-//   }
-
-//   return response;
-// };
-
 export const logoutAction = async () => {
   await removeTokenCookies();
   return await request(`${baseUrl}/auth/logout`).post({});
