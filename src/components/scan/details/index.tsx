@@ -21,6 +21,7 @@ export const TokenDetails = () => {
   const $report = useQuery({
     queryKey: ['cached-report'],
     queryFn: getCachedTokenReport,
+    staleTime: 0,
   });
 
   if ($report.isLoading) {

@@ -12,21 +12,18 @@ type Props = {
 
 const DashboardLayout = async ({ children }: Props) => {
   try {
-    const user = await getUserAction();
+    await getUserAction();
+  } catch {
+    console.log('down');
+    try {
+      const refresh = await refreshTokenAction();
 
-    if (!user?.email) {
-      try {
-        const refresh = await refreshTokenAction();
-
-        if (!refresh.access_token || !refresh.refresh_token) {
-          redirect('/sign-in');
-        }
-      } catch {
+      if (!refresh.access_token || !refresh.refresh_token) {
         redirect('/sign-in');
       }
+    } catch {
+      redirect('/sign-in');
     }
-  } catch {
-    redirect('/sign-in');
   }
 
   return (
