@@ -1,13 +1,34 @@
 import { ReactNode } from 'react';
 
+import { redirect } from 'next/navigation';
+
 import { Navigation } from '@/components/navigation';
 import { Sidebar } from '@/components/sidebar';
+import { getUserAction, refreshTokenAction } from '@/server/actions';
 
 type Props = {
   children: ReactNode;
 };
 
-const DashboardLayout = ({ children }: Props) => {
+const DashboardLayout = async ({ children }: Props) => {
+  try {
+    const user = await getUserAction();
+
+    if (!user?.email) {
+      try {
+        const refresh = await refreshTokenAction();
+
+        if (!refresh.access_token || !refresh.refresh_token) {
+          redirect('/sign-in');
+        }
+      } catch {
+        redirect('/sign-in');
+      }
+    }
+  } catch {
+    redirect('/sign-in');
+  }
+
   return (
     <div className="h-screen flex flex-col">
       <Navigation />
