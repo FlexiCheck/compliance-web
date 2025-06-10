@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 import { request } from '@/lib/request';
 
-import { TAuthResponse, TUser } from './schema';
+import { TAuthResponse } from './schema';
 
 enum TokenKeys {
   accessToken = 'access-token',
@@ -70,43 +70,35 @@ export const registerAction = async (input: AuthActionInput) => {
   return response;
 };
 
-export const getUserAction = async () => {
-  const response = await request(`${baseUrl}/auth/me`).get({}, TUser);
-  console.log('getUserAction: ', { response });
+// export const getUserAction = async () => {
+//   const response = await request(`${baseUrl}/auth/me`).get({}, TUser);
+//   console.log('getUserAction: ', { response });
 
-  if (!response.id) {
-    await logoutAction();
-  }
+//   return response;
+// };
 
-  return response;
-};
+// export const refreshTokenAction = async () => {
+//   const cookieStore = await cookies();
+//   const refreshToken = cookieStore.get(TokenKeys.refreshToken)?.value;
+//   const headers = new Headers();
 
-export const refreshTokenAction = async () => {
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get(TokenKeys.refreshToken)?.value;
-  const headers = new Headers();
+//   headers.set('Authorization', `Bearer ${refreshToken}`);
 
-  headers.set('Authorization', `Bearer ${refreshToken}`);
+//   const response = await request(`${baseUrl}/auth/refresh`).post(
+//     {
+//       withoutAuth: true,
+//       headers,
+//     },
+//     TAuthResponse
+//   );
 
-  const response = await request(`${baseUrl}/auth/refresh`).post(
-    {
-      withoutAuth: true,
-      headers,
-    },
-    TAuthResponse
-  );
+//   if (response.access_token && response.refresh_token) {
+//     await setCookieToken(TokenKeys.accessToken, response.access_token);
+//     await setCookieToken(TokenKeys.refreshToken, response.refresh_token);
+//   }
 
-  // console.log('in refreshTokenAction: ', { response });
-
-  if (response.access_token && response.refresh_token) {
-    await setCookieToken(TokenKeys.accessToken, response.access_token);
-    await setCookieToken(TokenKeys.refreshToken, response.refresh_token);
-  } else {
-    await logoutAction();
-  }
-
-  return response;
-};
+//   return response;
+// };
 
 export const logoutAction = async () => {
   await removeTokenCookies();
