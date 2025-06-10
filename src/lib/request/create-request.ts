@@ -61,7 +61,7 @@ export const createRequest = <Path extends string>(method: RequestMethods, url: 
     try {
       const res = await fetch(input.query ? `${apiUrl}?${input.query}` : apiUrl, requestInit);
 
-      console.log({ res });
+      console.log({ res, apiUrl });
 
       if (res.status >= 500) {
         const error = await res.json();
