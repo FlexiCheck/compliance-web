@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 import { request } from '@/lib/request';
 
-import { TAuthResponse } from './schema';
+import { TAuthResponse, TUser } from './schema';
 
 enum TokenKeys {
   accessToken = 'access-token',
@@ -58,6 +58,31 @@ export const registerAction = async (input: AuthActionInput) => {
     {
       body: input,
       withoutAuth: true,
+    },
+    TAuthResponse
+  );
+
+  if (response.access_token && response.refresh_token) {
+    await setCookieToken(TokenKeys.accessToken, response.access_token);
+    await setCookieToken(TokenKeys.refreshToken, response.refresh_token);
+  }
+
+  return response;
+};
+
+export const getUserAction = async () => {
+  return await request(`${baseUrl}/auth/me`).get({}, TUser);
+};
+
+export const refreshTokenAction = async (refreshToken?: string) => {
+  const headers = new Headers();
+
+  headers.set('Authorization', `Bearer ${refreshToken}`);
+
+  const response = await request(`${baseUrl}/auth/refresh`).post(
+    {
+      withoutAuth: true,
+      headers,
     },
     TAuthResponse
   );

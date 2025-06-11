@@ -23,12 +23,6 @@ import { Input } from '@/components/ui/input';
 
 const formSchema = z.object({
   symbol: z.string().min(1).trim(),
-  url: z
-    .string()
-    .url({
-      message: 'Please enter a valid website URL (including http:// or https://)',
-    })
-    .trim(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -39,12 +33,11 @@ export const ScanTokenForm = () => {
   const form = useForm<FormValues>({
     defaultValues: {
       symbol: '',
-      url: '',
     },
     resolver: zodResolver(formSchema),
   });
 
-  const [symbol, url] = form.watch(['symbol', 'url']);
+  const symbol = form.watch('symbol');
 
   const $scanToken = useMutation({
     mutationKey: ['scan-token'],
@@ -58,7 +51,6 @@ export const ScanTokenForm = () => {
         router.push('/dashboard');
       },
       onError: (error) => {
-        console.log({ error });
         toast.error('Failed to scan token ' + error.message);
       },
     });
@@ -99,21 +91,7 @@ export const ScanTokenForm = () => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="url"
-          render={({ field }) => (
-            <FormItem className="mt-5 mb-8">
-              <FormLabel>Token Website URL (e.g. bitcoin.org)</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter website URL..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" disabled={symbol === '' || url === ''} className="w-full">
+        <Button type="submit" disabled={symbol === ''} className="w-full mt-5">
           Run Analysis
         </Button>
       </form>
