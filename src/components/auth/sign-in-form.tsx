@@ -37,8 +37,7 @@ export const SignInForm = () => {
       onSuccess: async () => {
         router.push('/dashboard');
       },
-      onError: (error) => {
-        console.log({ error });
+      onError: () => {
         form.setError('root', {
           message: 'Incorrect email or password',
         });
