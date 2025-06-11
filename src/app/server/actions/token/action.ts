@@ -11,6 +11,7 @@ export const getCachedTokenReport = async () => {
 
 type ScanTokenInput = {
   symbol: string;
+  url: string;
 };
 
 export const scanToken = async (input: ScanTokenInput) => {
