@@ -109,7 +109,7 @@ export type TokenHolderAnalysis = Nullable<{
   whale_movement_indicator: string;
 }>;
 
-export type ActivityIndicator = 'high' | 'medium' | 'low';
+export type ActivityIndicator = 'High' | 'Medium' | 'Low';
 
 type CommunityInfoTwitter = Nullable<{
   activity_indicator: ActivityIndicator;

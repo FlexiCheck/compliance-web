@@ -7,7 +7,7 @@ import {
   Github,
   Link,
   LucideProps,
-  MessageCircle,
+  Send,
   TriangleAlert,
   Twitter,
 } from 'lucide-react';
@@ -35,7 +35,7 @@ export const formatNumber = (value: number | null | undefined) => {
 
 export const socialIcons = {
   twitter: Twitter,
-  telegram: MessageCircle,
+  telegram: Send,
   github: Github,
   reddit: Link,
 } as const;
@@ -81,12 +81,12 @@ export const securityCheckIcons: Record<
   },
   green: {
     Icon: CircleCheck,
-    color: 'text-red-600',
+    color: 'text-green-600',
   },
 };
 
 export const activityIndicatorColors: Record<ActivityIndicator, string> = {
-  high: 'green',
-  medium: 'yellow',
-  low: 'red',
+  High: 'green',
+  Medium: 'yellow',
+  Low: 'red',
 };
