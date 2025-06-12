@@ -15,8 +15,8 @@ const PrivacyPolicyPage = () => {
           <h2 className="text-2xl font-semibold mb-3">1. Data Controller</h2>
           <p className="mb-4">
             FlexiCheck, Inc. is the controller of your personal data. Contact:{' '}
-            <a href="mailto:privacy@tokenhawk.xyz" className="text-blue-600 hover:underline">
-              privacy@tokenhawk.xyz
+            <a href="mailto:tokenhawk@flexicheck.ai" className="text-blue-600 hover:underline">
+              tokenhawk@flexicheck.ai
             </a>
             .
           </p>
@@ -87,8 +87,8 @@ const PrivacyPolicyPage = () => {
           <p className="mb-2">
             To request deletion of your account and all associated personal data, you must send an
             email to{' '}
-            <a href="mailto:privacy@tokenhawk.xyz" className="text-blue-600 hover:underline">
-              privacy@tokenhawk.xyz
+            <a href="mailto:tokenhawk@flexicheck.ai" className="text-blue-600 hover:underline">
+              tokenhawk@flexicheck.ai
             </a>{' '}
             from the email address linked to your account.
           </p>
