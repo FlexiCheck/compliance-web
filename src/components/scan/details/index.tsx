@@ -2,9 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { AlertCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { getCachedTokenReport } from '@/app/server/actions/token';
 import { Accordion } from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 
 import { DetailsSkeleton } from './details-skeleton';
@@ -20,10 +22,11 @@ import {
 import { HolderAnalysis } from './sections/holder-analysis';
 
 export const TokenDetails = () => {
+  const router = useRouter();
   const $report = useQuery({
     queryKey: ['cached-report'],
     queryFn: getCachedTokenReport,
-    staleTime: 0,
+    retry: false,
   });
 
   if ($report.isLoading) {
@@ -34,8 +37,9 @@ export const TokenDetails = () => {
     return (
       <EmptyState
         icon={AlertCircle}
-        title="No Report Available"
-        description="We couldn't find any report data for this token. Please try scanning the token again."
+        title="Welcome, scan your first token!"
+        description="Get started by scanning a token to analyze its compliance and security."
+        action={<Button onClick={() => router.push('/dashboard/scan')}>Scan Token</Button>}
       />
     );
   }
