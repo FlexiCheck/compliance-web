@@ -89,7 +89,7 @@ export const ScanTokenForm = () => {
           name="symbol"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Token Name (e.g. Bitcoin)</FormLabel>
+              <FormLabel>Make sure to insert correct Token Name (e.g. Bitcoin)</FormLabel>
               <FormControl>
                 <Input placeholder="Enter token name..." {...field} />
               </FormControl>
