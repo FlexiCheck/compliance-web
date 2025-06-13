@@ -1,6 +1,6 @@
 import { Send, Twitter } from 'lucide-react';
 
-import { CommunityInfoAnalysis } from '@/lib/_types';
+import { ActivityIndicator, CommunityInfoAnalysis } from '@/lib/_types';
 import { activityIndicatorColors, formatNumber } from '@/lib/utils';
 
 import { DetailsAccordion } from '../details-accordion';
@@ -26,7 +26,7 @@ export const CommunityInfo = ({ communityInfo: { twitter, telegram } }: Props) =
             <div className="grid grid-cols-2 gap-4 mt-2">
               <DetailsSubItem title="Activity">
                 <p
-                  className={`text-base font-semibold text-${twitterActivity ? activityIndicatorColors[twitterActivity] : 'gray'}-600`}
+                  className={`text-base font-semibold text-${twitterActivity ? activityIndicatorColors[twitterActivity?.toLowerCase() as ActivityIndicator] : 'gray'}-600`}
                 >
                   {twitterActivity ?? 'N/A'}
                 </p>
@@ -39,7 +39,7 @@ export const CommunityInfo = ({ communityInfo: { twitter, telegram } }: Props) =
               </DetailsSubItem>
 
               <DetailsSubItem title="Account Age">
-                <p className="text-base font-semibold text-gray-800">
+                <p className="text-base font-semibold text-gray-600">
                   {twitter.account_age ?? 'N/A'}
                 </p>
               </DetailsSubItem>
@@ -58,7 +58,7 @@ export const CommunityInfo = ({ communityInfo: { twitter, telegram } }: Props) =
             <div className="grid grid-cols-2 gap-4 mt-2">
               <DetailsSubItem title="Activity">
                 <p
-                  className={`text-base font-semibold text-${telegramActivity ? activityIndicatorColors[telegramActivity] : 'gray'}-600`}
+                  className={`text-base font-semibold text-${telegramActivity ? activityIndicatorColors[telegramActivity?.toLowerCase() as ActivityIndicator] : 'gray'}-600`}
                 >
                   {telegramActivity ?? 'N/A'}
                 </p>
@@ -71,7 +71,7 @@ export const CommunityInfo = ({ communityInfo: { twitter, telegram } }: Props) =
               </DetailsSubItem>
 
               <DetailsSubItem title="Total Users (24h)">
-                <p className="text-base font-semibold text-green-600">
+                <p className="text-base font-semibold text-gray-600">
                   {formatNumber(telegram.total_users_24h)}
                 </p>
               </DetailsSubItem>

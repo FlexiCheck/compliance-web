@@ -1,12 +1,14 @@
 import { ReactNode } from 'react';
 
 import { CexInfo, FundamentalsAnalysis, MarketFundamentalsAnalysis } from '@/lib/_types';
-import { formatNumber } from '@/lib/utils';
+import { cn, formatNumber } from '@/lib/utils';
 
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
 const CexCard = ({ name, daily_netflow, market_cap_held }: CexInfo) => {
+  const isPositive = daily_netflow?.includes('+');
+
   return (
     <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
       <div className="flex-1">
@@ -15,7 +17,13 @@ const CexCard = ({ name, daily_netflow, market_cap_held }: CexInfo) => {
       </div>
       <div className="text-right">
         <div className="text-sm text-gray-600">Daily Net Flow</div>
-        <div className="font-semibold text-green-600">{daily_netflow ?? 'N/A'}</div>
+        <div
+          className={cn('font-semibold text-red-600', {
+            'text-green-600': isPositive,
+          })}
+        >
+          {daily_netflow ?? 'N/A'}
+        </div>
       </div>
     </div>
   );

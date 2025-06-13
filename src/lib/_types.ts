@@ -85,9 +85,11 @@ export type DomainInfoAnalysis = Nullable<{
   name_servers: Array<string>;
 }>;
 
+export type ContactRiskSeverity = 'high' | 'medium' | 'low';
+
 export type ContractRisk = Nullable<{
   name: string;
-  severity: string;
+  severity: ContactRiskSeverity;
   description: string;
 }>;
 
@@ -104,12 +106,14 @@ export type OperationalAnalysis = Nullable<{
 // TODO add correct types
 export type AdverseMediaAnalysis = Nullable<null>;
 
+export type WhaleMovementIndicator = 'low' | 'medium' | 'high';
+
 export type TokenHolderAnalysis = Nullable<{
   total_holders: number;
-  whale_movement_indicator: string;
+  whale_movement_indicator: WhaleMovementIndicator;
 }>;
 
-export type ActivityIndicator = 'High' | 'Medium' | 'Low';
+export type ActivityIndicator = 'high' | 'medium' | 'low';
 
 type CommunityInfoTwitter = Nullable<{
   activity_indicator: ActivityIndicator;
