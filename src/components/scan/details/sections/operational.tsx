@@ -1,18 +1,24 @@
 import { LucideExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
-import { ContractRisk, OperationalAnalysis } from '@/lib/_types';
-import { formatDate } from '@/lib/utils';
+import { ContactRiskSeverity, ContractRisk, OperationalAnalysis } from '@/lib/_types';
+import { contactRiskSeverityUtils, formatDate } from '@/lib/utils';
 
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
 const ContractRiskItem = ({ name, description, severity }: ContractRisk) => {
+  const severityKey = severity?.toLowerCase() as ContactRiskSeverity;
+  const { Icon, color } = contactRiskSeverityUtils[severityKey ?? 'medium'];
+
   return (
     <div className="p-3 bg-gray-50 rounded space-y-1">
-      <p className="text-base font-medium text-gray-900">{name}</p>
-      <p className="text-sm text-gray-600">{description}</p>
-      <p className="text-base font-medium text-gray-600">Severity: {severity}</p>
+      <div className="flex items-center gap-3">
+        <Icon className={`size-4 ${color}`} />
+        <p className="text-base font-medium text-gray-900">{name}</p>
+        <p className={`text-xs ${color}`}>{severity}</p>
+      </div>
+      <p className="text-sm text-gray-600 ml-7">{description ?? '-'}</p>
     </div>
   );
 };

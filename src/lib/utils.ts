@@ -4,6 +4,7 @@ import { clsx, type ClassValue } from 'clsx';
 import {
   CircleAlert,
   CircleCheck,
+  CircleX,
   Github,
   Link,
   LucideProps,
@@ -13,7 +14,13 @@ import {
 } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 
-import { ActivityIndicator, SecurityCheckColor, SecurityCheckKeys } from './_types';
+import {
+  ActivityIndicator,
+  ContactRiskSeverity,
+  SecurityCheckColor,
+  SecurityCheckKeys,
+  WhaleMovementIndicator,
+} from './_types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -86,7 +93,34 @@ export const securityCheckIcons: Record<
 };
 
 export const activityIndicatorColors: Record<ActivityIndicator, string> = {
-  High: 'green',
-  Medium: 'yellow',
-  Low: 'red',
+  high: 'green',
+  medium: 'yellow',
+  low: 'red',
+};
+
+export const contactRiskSeverityUtils: Record<
+  ContactRiskSeverity,
+  {
+    Icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+    color: string;
+  }
+> = {
+  low: {
+    Icon: CircleCheck,
+    color: 'text-green-600',
+  },
+  medium: {
+    Icon: TriangleAlert,
+    color: 'text-orange-300',
+  },
+  high: {
+    Icon: CircleX,
+    color: 'text-red-600',
+  },
+};
+
+export const whaleMovementIndicatorColors: Record<WhaleMovementIndicator, string> = {
+  low: 'text-green-600',
+  medium: 'text-orange-600',
+  high: 'text-red-600',
 };
