@@ -16,6 +16,7 @@ import { twMerge } from 'tailwind-merge';
 
 import {
   ActivityIndicator,
+  AdverseMediaSentiment,
   ContactRiskSeverity,
   SecurityCheckColor,
   SecurityCheckKeys,
@@ -123,4 +124,10 @@ export const whaleMovementIndicatorColors: Record<WhaleMovementIndicator, string
   low: 'text-green-600',
   medium: 'text-orange-600',
   high: 'text-red-600',
+};
+
+export const adverseMediaSentimentColors: Record<AdverseMediaSentiment, string> = {
+  positive: 'green',
+  neutral: 'gray',
+  negative: 'red',
 };

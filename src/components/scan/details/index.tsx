@@ -66,7 +66,7 @@ export const TokenDetails = () => {
           <DomainInfo domainInfo={report?.domain_info ?? {}} />
           <Operational operational={certik_data?.operational ?? {}} />
           {/* Coming soon */}
-          <AdverseMedia adverseMedia={null} />
+          <AdverseMedia adverseMedias={report?.adverse_media_project} />
           <HolderAnalysis holderAnalysis={certik_data?.token_holder_analysis ?? {}} />
           <CommunityInfo communityInfo={certik_data?.community_info ?? {}} />
         </div>
