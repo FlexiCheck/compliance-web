@@ -103,8 +103,17 @@ export type OperationalAnalysis = Nullable<{
   details_url: string;
 }>;
 
-// TODO add correct types
-export type AdverseMediaAnalysis = Nullable<null>;
+export type AdverseMediaSentiment = 'positive' | 'neutral' | 'negative';
+
+export type AdverseMediaAnalysis = Nullable<{
+  url: string;
+  date: string;
+  title: string;
+  source: string;
+  summary: string;
+  sentiment: AdverseMediaSentiment;
+  risk_level: string;
+}>;
 
 export type WhaleMovementIndicator = 'low' | 'medium' | 'high';
 
