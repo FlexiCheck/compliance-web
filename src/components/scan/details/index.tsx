@@ -20,6 +20,7 @@ import {
   TokenOverview,
   TokenReview,
 } from './sections';
+import { AiRiskAnalysis } from './sections/ai-risk-analysis';
 import { HolderAnalysis } from './sections/holder-analysis';
 import { WebsiteContentAnalysis } from './sections/website-content-analysis';
 
@@ -63,6 +64,7 @@ export const TokenDetails = () => {
 
       <Accordion type="single" collapsible>
         <div className="space-y-5 pb-8">
+          <AiRiskAnalysis ai_risk_analysis={report?.ai_risk_analysis ?? {}} />
           <TokenReview
             tokenReview={certik_data?.token_review ?? {}}
             ai_risk={report?.ai_risk_analysis?.categories?.find(
