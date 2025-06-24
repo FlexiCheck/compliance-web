@@ -1,11 +1,13 @@
-import { DomainInfoAnalysis } from '@/lib/_types';
+import { AIRIskAnalysisCategory, DomainInfoAnalysis } from '@/lib/_types';
 import { formatDate } from '@/lib/utils';
 
+import { AIRisk } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
 type Props = {
   domainInfo: DomainInfoAnalysis;
+  ai_risk: AIRIskAnalysisCategory;
 };
 
 export const DomainInfo = ({
@@ -17,11 +19,14 @@ export const DomainInfo = ({
     expiry_date,
     domain_status,
     name_servers,
+    ai_summary,
   },
+  ai_risk,
 }: Props) => {
   return (
     <DetailsAccordion title="Domain Info">
       <div className="w-full space-y-5">
+        {ai_risk && <AIRisk ai_risk={ai_risk} />}
         <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
           <DetailsItem title="Domain">
             <p className="text-lg font-semibold text-blue-600">{domain ?? 'N/A'}</p>
@@ -61,6 +66,12 @@ export const DomainInfo = ({
           ) : (
             <p className="text-sm text-gray-500 italic">No name servers available</p>
           )}
+        </DetailsItem>
+
+        <DetailsItem title="AI Analysis Summary">
+          <p className="text-gray-800 text-sm leading-relaxed whitespace-pre-line mt-2">
+            {ai_summary ?? '-'}
+          </p>
         </DetailsItem>
       </div>
     </DetailsAccordion>

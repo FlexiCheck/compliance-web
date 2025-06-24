@@ -1,23 +1,27 @@
 import { Send, Twitter } from 'lucide-react';
 
-import { ActivityIndicator, CommunityInfoAnalysis } from '@/lib/_types';
+import { ActivityIndicator, AIRIskAnalysisCategory, CommunityInfoAnalysis } from '@/lib/_types';
 import { activityIndicatorColors, formatNumber } from '@/lib/utils';
 
+import { AIRisk } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 import { DetailsSubItem } from './market-fundamentals';
 
 type Props = {
   communityInfo: CommunityInfoAnalysis;
+  ai_risk: AIRIskAnalysisCategory;
 };
 
-export const CommunityInfo = ({ communityInfo: { twitter, telegram } }: Props) => {
+export const CommunityInfo = ({ communityInfo: { twitter, telegram }, ai_risk }: Props) => {
   const twitterActivity = twitter?.activity_indicator;
   const telegramActivity = telegram?.activity_indicator;
 
   return (
     <DetailsAccordion title="Community Info">
       <div className="w-full space-y-5">
+        {ai_risk && <AIRisk ai_risk={ai_risk} />}
+
         {twitter && (
           <DetailsItem
             title="Twitter Metrics"

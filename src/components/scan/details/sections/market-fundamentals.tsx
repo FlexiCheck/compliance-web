@@ -1,8 +1,14 @@
 import { ReactNode } from 'react';
 
-import { CexInfo, FundamentalsAnalysis, MarketFundamentalsAnalysis } from '@/lib/_types';
+import {
+  AIRIskAnalysisCategory,
+  CexInfo,
+  FundamentalsAnalysis,
+  MarketFundamentalsAnalysis,
+} from '@/lib/_types';
 import { cn, formatNumber } from '@/lib/utils';
 
+import { AIRisk } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
@@ -41,6 +47,7 @@ export const DetailsSubItem = ({ title, children }: { title: string; children: R
 type Props = {
   marketFundamentals: MarketFundamentalsAnalysis;
   fundamentals: FundamentalsAnalysis;
+  ai_risk: AIRIskAnalysisCategory;
 };
 
 export const MarketFundamentals = ({
@@ -55,12 +62,16 @@ export const MarketFundamentals = ({
     total_value_locked_24h,
     unique_active_wallets_24h,
     tvl_ratio,
+    ai_summary,
   },
   fundamentals: { total_active_users_7d, token_transferred_7d, total_transactions_7d },
+  ai_risk,
 }: Props) => {
   return (
     <DetailsAccordion title="Market Fundamentals">
       <div className="space-y-5">
+        {ai_risk && <AIRisk ai_risk={ai_risk} />}
+
         <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
           <DetailsItem title="Current Price">
             <p className="text-2xl font-bold text-blue-600">{token_price ?? 'N/A'}</p>
@@ -151,6 +162,12 @@ export const MarketFundamentals = ({
               </p>
             </DetailsSubItem>
           </div>
+        </DetailsItem>
+
+        <DetailsItem title="AI Analysis Summary">
+          <p className="text-gray-800 text-sm leading-relaxed whitespace-pre-line mt-2">
+            {ai_summary}
+          </p>
         </DetailsItem>
       </div>
     </DetailsAccordion>

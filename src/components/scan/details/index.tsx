@@ -8,6 +8,7 @@ import { getCachedTokenReport } from '@/app/server/actions/token';
 import { Accordion } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
+import { AIRIskAnalysisCategory } from '@/lib/_types';
 
 import { DetailsSkeleton } from './details-skeleton';
 import {
@@ -20,6 +21,7 @@ import {
   TokenReview,
 } from './sections';
 import { HolderAnalysis } from './sections/holder-analysis';
+import { WebsiteContentAnalysis } from './sections/website-content-analysis';
 
 export const TokenDetails = () => {
   const router = useRouter();
@@ -54,21 +56,58 @@ export const TokenDetails = () => {
           ticker: report.token_symbol,
           ...(certik_data?.token_overview ?? {}),
         }}
+        ai_risk={report?.ai_risk_analysis?.categories?.find(
+          (item: AIRIskAnalysisCategory) => item?.category === 'Token Overview'
+        )}
       />
 
       <Accordion type="single" collapsible>
         <div className="space-y-5 pb-8">
-          <TokenReview tokenReview={certik_data?.token_review ?? {}} />
+          <TokenReview
+            tokenReview={certik_data?.token_review ?? {}}
+            ai_risk={report?.ai_risk_analysis?.categories?.find(
+              (item: AIRIskAnalysisCategory) => item?.category === 'Smart Contract Risks'
+            )}
+          />
           <MarketFundamentals
             marketFundamentals={certik_data?.market_fundamentals ?? {}}
             fundamentals={certik_data?.fundamentals ?? {}}
+            ai_risk={report?.ai_risk_analysis?.categories?.find(
+              (item: AIRIskAnalysisCategory) => item?.category === 'Market Fundamentals'
+            )}
           />
-          <DomainInfo domainInfo={report?.domain_info ?? {}} />
-          <Operational operational={certik_data?.operational ?? {}} />
+          <DomainInfo
+            domainInfo={report?.domain_info ?? {}}
+            ai_risk={report?.ai_risk_analysis?.categories?.find(
+              (item: AIRIskAnalysisCategory) => item?.category === 'Domain Info'
+            )}
+          />
+          <WebsiteContentAnalysis website_content_screening={report?.website_content_screening} />
+          <Operational
+            operational={certik_data?.operational ?? {}}
+            ai_risk={report?.ai_risk_analysis?.categories?.find(
+              (item: AIRIskAnalysisCategory) => item?.category === 'Operational Metrics'
+            )}
+          />
           {/* Coming soon */}
-          <AdverseMedia adverseMedias={report?.adverse_media_project} />
-          <HolderAnalysis holderAnalysis={certik_data?.token_holder_analysis ?? {}} />
-          <CommunityInfo communityInfo={certik_data?.community_info ?? {}} />
+          <AdverseMedia
+            adverseMedias={report?.adverse_media_project}
+            ai_risk={report?.ai_risk_analysis?.categories?.find(
+              (item: AIRIskAnalysisCategory) => item?.category === 'Adverse Media'
+            )}
+          />
+          <HolderAnalysis
+            holderAnalysis={certik_data?.token_holder_analysis ?? {}}
+            ai_risk={report?.ai_risk_analysis?.categories?.find(
+              (item: AIRIskAnalysisCategory) => item?.category === 'Token Distribution'
+            )}
+          />
+          <CommunityInfo
+            communityInfo={certik_data?.community_info ?? {}}
+            ai_risk={report?.ai_risk_analysis?.categories?.find(
+              (item: AIRIskAnalysisCategory) => item?.category === 'Community Activity'
+            )}
+          />
         </div>
       </Accordion>
     </div>
