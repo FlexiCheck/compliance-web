@@ -27,8 +27,19 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const formatDate = (date: string | null | undefined) => {
+export const formatDate = (date: string | null | undefined, options?: { dateTime?: boolean }) => {
   if (!date) return 'N/A';
+  if (options?.dateTime) {
+    return new Date(date).toLocaleString('en-US', {
+      month: 'numeric',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
+  }
   return new Date(date).toLocaleDateString('en-US', {
     month: 'numeric',
     day: 'numeric',

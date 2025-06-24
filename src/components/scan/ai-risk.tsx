@@ -7,7 +7,7 @@ type Props = {
 };
 
 // Define this mapping outside your component
-const riskLevelStyles = {
+export const riskLevelStyles = {
   low: {
     bg: 'bg-green-50',
     border: 'border-green-200',

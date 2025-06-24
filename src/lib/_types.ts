@@ -8,6 +8,12 @@ export type AIRIskAnalysisCategory = Nullable<{
   summary: string;
 }>;
 
+export type AIRiskANalysisSummary = Nullable<{
+  analysis_timestamp: string;
+  categories: Array<AIRIskAnalysisCategory>;
+  overall_risk_assessment: string;
+}>;
+
 export type TokenOverviewAnalysis = Nullable<{
   ticker: string;
   price: string;
