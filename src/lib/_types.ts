@@ -1,5 +1,13 @@
 export type Nullable<T> = { [K in keyof T]: T[K] | null };
 
+export type RiskLevel = 'high' | 'medium' | 'low';
+
+export type AIRIskAnalysisCategory = Nullable<{
+  category: string;
+  risk_level: RiskLevel;
+  summary: string;
+}>;
+
 export type TokenOverviewAnalysis = Nullable<{
   ticker: string;
   price: string;
@@ -67,6 +75,7 @@ export type MarketFundamentalsAnalysis = Nullable<{
   total_value_locked_24h: string;
   unique_active_wallets_24h: string;
   tvl_ratio: string;
+  ai_summary: string;
 }>;
 
 export type FundamentalsAnalysis = Nullable<{
@@ -83,9 +92,10 @@ export type DomainInfoAnalysis = Nullable<{
   expiry_date: string;
   domain_status: string;
   name_servers: Array<string>;
+  ai_summary: string;
 }>;
 
-export type ContactRiskSeverity = 'high' | 'medium' | 'low';
+export type ContactRiskSeverity = RiskLevel;
 
 export type ContractRisk = Nullable<{
   name: string;
@@ -115,14 +125,14 @@ export type AdverseMediaAnalysis = Nullable<{
   risk_level: string;
 }>;
 
-export type WhaleMovementIndicator = 'low' | 'medium' | 'high';
+export type WhaleMovementIndicator = RiskLevel;
 
 export type TokenHolderAnalysis = Nullable<{
   total_holders: number;
   whale_movement_indicator: WhaleMovementIndicator;
 }>;
 
-export type ActivityIndicator = 'high' | 'medium' | 'low';
+export type ActivityIndicator = RiskLevel;
 
 type CommunityInfoTwitter = Nullable<{
   activity_indicator: ActivityIndicator;
@@ -142,3 +152,11 @@ export type CommunityInfoAnalysis = {
   twitter: CommunityInfoTwitter;
   telegram: CommunityInfoTelegram;
 };
+
+export type WebsiteContentScreening = Nullable<{
+  ai_summary: string;
+  faq_analysis: string;
+  landing_page_analysis: string;
+  cookie_policy_analysis: string;
+  privacy_policy_analysis: string;
+}>;

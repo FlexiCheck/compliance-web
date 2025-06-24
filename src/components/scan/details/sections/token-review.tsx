@@ -1,6 +1,12 @@
-import { SecurityCheckColor, SecurityCheckKeys, TokenReviewPAnalysis } from '@/lib/_types';
+import {
+  AIRIskAnalysisCategory,
+  SecurityCheckColor,
+  SecurityCheckKeys,
+  TokenReviewPAnalysis,
+} from '@/lib/_types';
 import { securityCheckIcons, securityCheckLabels } from '@/lib/utils';
 
+import { AIRisk } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
@@ -25,16 +31,19 @@ const SecurityCheckItem = ({
 
 type Props = {
   tokenReview: TokenReviewPAnalysis;
+  ai_risk: AIRIskAnalysisCategory;
 };
 
 export const TokenReview = ({
   tokenReview: { contract, top_10_holders_ratio, ...securityChecks },
+  ai_risk,
 }: Props) => {
   const securityCheckArray = Object.entries(securityChecks);
 
   return (
     <DetailsAccordion title="Token Review">
       <div className="space-y-5">
+        {ai_risk && <AIRisk ai_risk={ai_risk} />}
         <DetailsItem title="Contract Address">
           <div className="text-xs font-mono bg-gray-100 p-2 rounded break-all mt-1">
             {contract ?? 'N/A'}

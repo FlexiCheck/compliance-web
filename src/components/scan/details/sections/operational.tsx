@@ -1,9 +1,15 @@
 import { LucideExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
-import { ContactRiskSeverity, ContractRisk, OperationalAnalysis } from '@/lib/_types';
+import {
+  AIRIskAnalysisCategory,
+  ContactRiskSeverity,
+  ContractRisk,
+  OperationalAnalysis,
+} from '@/lib/_types';
 import { contactRiskSeverityUtils, formatDate } from '@/lib/utils';
 
+import { AIRisk } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
@@ -25,6 +31,7 @@ const ContractRiskItem = ({ name, description, severity }: ContractRisk) => {
 
 type Props = {
   operational: OperationalAnalysis;
+  ai_risk: AIRIskAnalysisCategory;
 };
 
 export const Operational = ({
@@ -37,10 +44,13 @@ export const Operational = ({
     details_url,
     contract_risks,
   },
+  ai_risk,
 }: Props) => {
   return (
     <DetailsAccordion title="Operational">
       <div className="w-full space-y-5">
+        {ai_risk && <AIRisk ai_risk={ai_risk} />}
+
         <DetailsItem title="Contract address">
           <div className="text-xs font-mono bg-gray-100 p-2 rounded break-all mt-1">
             {contract_address ?? 'N/A'}

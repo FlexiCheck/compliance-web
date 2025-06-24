@@ -1,6 +1,7 @@
-import { AdverseMediaAnalysis, AdverseMediaSentiment } from '@/lib/_types';
+import { AdverseMediaAnalysis, AdverseMediaSentiment, AIRIskAnalysisCategory } from '@/lib/_types';
 import { adverseMediaSentimentColors, formatDate } from '@/lib/utils';
 
+import { AIRisk } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
@@ -23,18 +24,30 @@ const AdverseMediaArticle = (adverseMedia: AdverseMediaAnalysis | null) => {
         {formatDate(adverseMedia?.date)}
       </div>
       <div
-        className="text-sm text-gray-700"
+        className="text-sm text-gray-700 mb-2"
         dangerouslySetInnerHTML={{ __html: adverseMedia?.summary || '' }}
       />
+
+      {adverseMedia?.url && (
+        <a
+          href={adverseMedia.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-blue-600 hover:underline"
+        >
+          Read full article
+        </a>
+      )}
     </div>
   );
 };
 
 type Props = {
   adverseMedias: AdverseMediaAnalysis[] | null;
+  ai_risk: AIRIskAnalysisCategory;
 };
 
-export const AdverseMedia = ({ adverseMedias }: Props) => {
+export const AdverseMedia = ({ adverseMedias, ai_risk }: Props) => {
   const total = adverseMedias?.length || 0;
   const positive = adverseMedias?.filter((article) => article.sentiment === 'positive').length || 0;
   const neutral = adverseMedias?.filter((article) => article.sentiment === 'neutral').length || 0;
@@ -47,6 +60,8 @@ export const AdverseMedia = ({ adverseMedias }: Props) => {
   return (
     <DetailsAccordion title="Adverse Media">
       <div className="w-full space-y-5">
+        {ai_risk && <AIRisk ai_risk={ai_risk} />}
+
         <DetailsItem title="Total Articles">
           <p className="text-2xl font-bold text-blue-600">{total}</p>
         </DetailsItem>
