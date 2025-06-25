@@ -27,12 +27,11 @@ export const ScanningLoader = ({ tokenName }: Props) => {
 
       <div className="flex items-center gap-3">
         <div className="flex flex-col items-center">
-          <h3 className="tracking-tight text-2xl font-bold text-center">
-            Analyzing the token {tokenName}
-          </h3>
+          <h3 className="tracking-tight text-2xl font-bold text-center">Running deep analysis</h3>
           <p className="text-sm text-muted-foreground text-center mt-2">
-            This check may take a few seconds to a few minutes.
+            Both on-chain and off. This’ll take just a few minutes.
           </p>
+          <p className="text-sm text-muted-foreground text-center mt-2">Token: {tokenName}</p>
         </div>
       </div>
 
