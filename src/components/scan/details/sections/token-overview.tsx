@@ -2,15 +2,13 @@ import { LucideExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
-import { AIRIskAnalysisCategory, TokenOverviewAnalysis } from '@/lib/_types';
+import { TokenOverviewAnalysis } from '@/lib/_types';
 import { socialIcons } from '@/lib/utils';
 
-import { AIRisk } from '../../ai-risk';
 import { DetailsItem } from '../details-item';
 
 type Props = {
   token_overview: TokenOverviewAnalysis;
-  ai_risk: AIRIskAnalysisCategory;
 };
 
 export const TokenOverview = ({
@@ -24,7 +22,6 @@ export const TokenOverview = ({
     socials,
     description,
   },
-  ai_risk,
 }: Props) => {
   return (
     <div className="w-full space-y-5">
@@ -32,8 +29,6 @@ export const TokenOverview = ({
         <h1 className="text-3xl font-bold">{ticker} Token Analysis</h1>
         <p className="text-gray-500 mt-1">{description}</p>
       </div>
-
-      {ai_risk && <AIRisk ai_risk={ai_risk} />}
 
       <div className="flex items-stretch gap-5 md:flex-nowrap flex-wrap">
         <DetailsItem

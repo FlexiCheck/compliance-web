@@ -57,9 +57,6 @@ export const TokenDetails = () => {
           ticker: report.token_symbol,
           ...(certik_data?.token_overview ?? {}),
         }}
-        ai_risk={report?.ai_risk_analysis?.categories?.find(
-          (item: AIRIskAnalysisCategory) => item?.category === 'Token Overview'
-        )}
       />
 
       <Accordion type="single" collapsible>
