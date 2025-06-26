@@ -110,6 +110,14 @@ export const TokenDetails = () => {
               (item: AIRIskAnalysisCategory) => item?.category === 'Community Activity'
             )}
           />
+
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-gray-700 text-center">
+              Disclaimer: This tool aggregates third-party data and provides AI-generated summaries
+              for informational purposes only; it does not constitute financial advice, and users
+              are encouraged to conduct their own independent research before making any decisions.
+            </p>
+          </div>
         </div>
       </Accordion>
     </div>
