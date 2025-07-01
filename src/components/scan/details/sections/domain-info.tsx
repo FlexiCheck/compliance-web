@@ -1,7 +1,7 @@
 import { AIRIskAnalysisCategory, DomainInfoAnalysis } from '@/lib/_types';
 import { formatDate } from '@/lib/utils';
 
-import { AIRisk } from '../../ai-risk';
+import { AIRisk, AISummaryText } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
@@ -69,9 +69,7 @@ export const DomainInfo = ({
         </DetailsItem>
 
         <DetailsItem title="AI Analysis Summary">
-          <p className="text-gray-800 text-sm leading-relaxed whitespace-pre-line mt-2">
-            {ai_summary ?? '-'}
-          </p>
+          <AISummaryText text={ai_summary ?? ''} />
         </DetailsItem>
       </div>
     </DetailsAccordion>

@@ -10,3 +10,7 @@ export const TUser = z.object({
   id: z.number(),
   email: z.string(),
 });
+
+export const TLoginInitiateResponse = z.object({
+  token: z.string(),
+});

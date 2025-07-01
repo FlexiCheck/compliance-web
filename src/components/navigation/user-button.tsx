@@ -5,7 +5,7 @@ import { LogOut, User } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { logoutAction, removeTokenCookies } from '@/app/server/actions';
+import { logoutAction, removeTokenCookies } from '@/server/actions';
 
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getUserAction, refreshTokenAction } from '@/app/server/actions';
+import { getUserAction, refreshTokenAction } from '@/server/actions';
 
 export async function POST(request: NextRequest) {
   try {
