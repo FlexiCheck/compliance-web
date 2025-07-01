@@ -20,9 +20,7 @@ const AIRiskCategoryItem = ({ item }: { item: AIRIskAnalysisCategory }) => {
             {item.risk_level}
           </span>
         </div>
-        <div className="text-sm text-gray-600">
-          BNB has a high market cap and 24h volume, indicating strong market presence and liquidity.
-        </div>
+        <div className="text-sm text-gray-600">{item.summary}</div>
       </div>
     </div>
   );

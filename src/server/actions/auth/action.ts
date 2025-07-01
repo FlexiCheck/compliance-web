@@ -3,11 +3,12 @@ import { cookies } from 'next/headers';
 
 import { request } from '@/lib/request';
 
-import { TAuthResponse, TUser } from './schema';
+import { TAuthResponse, TLoginInitiateResponse, TUser } from './schema';
 
 enum TokenKeys {
   accessToken = 'access-token',
   refreshToken = 'refresh-token',
+  initiateToken = 'initiate-token',
 }
 
 const duration = 24 * 60 * 60 * 1000;
@@ -37,10 +38,38 @@ type AuthActionInput = {
 };
 
 export const loginAction = async (input: AuthActionInput) => {
-  const response = await request(`${baseUrl}/auth/login`).post(
+  const response = await request(`${baseUrl}/auth/login/initiate`).post(
     {
       body: input,
       withoutAuth: true,
+    },
+    TLoginInitiateResponse
+  );
+
+  if (response.token) {
+    await setCookieToken(TokenKeys.initiateToken, response.token);
+  }
+
+  return response;
+};
+
+type LogonVerifyActionInput = {
+  email: string;
+  code: string;
+};
+
+export const loginVerifyAction = async (input: LogonVerifyActionInput) => {
+  const cookieStore = await cookies();
+  const headers = new Headers();
+  const initiateToken = cookieStore.get(TokenKeys.initiateToken)?.value;
+
+  headers.set('Authorization', `Bearer ${initiateToken}`);
+
+  const response = await request(`${baseUrl}/auth/login/verify`).post(
+    {
+      body: input,
+      withoutAuth: true,
+      headers,
     },
     TAuthResponse
   );
@@ -51,6 +80,22 @@ export const loginAction = async (input: AuthActionInput) => {
   }
 
   return response;
+};
+
+export const resendCodeAction = async ({ email }: { email: string }) => {
+  const cookieStore = await cookies();
+  const headers = new Headers();
+  const initiateToken = cookieStore.get(TokenKeys.initiateToken)?.value;
+
+  headers.set('Authorization', `Bearer ${initiateToken}`);
+
+  return await request(`${baseUrl}/auth/login/resend`).post({
+    body: {
+      email,
+    },
+    headers,
+    withoutAuth: true,
+  });
 };
 
 export const registerAction = async (input: AuthActionInput) => {

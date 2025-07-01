@@ -4,9 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { loginAction } from '@/app/server/actions';
+import { loginAction } from '@/server/actions';
 
 import { AuthForm } from './auth-form';
 
@@ -35,7 +36,8 @@ export const SignInForm = () => {
   const onSubmit = async (values: FormValues) => {
     $login.mutate(values, {
       onSuccess: async () => {
-        router.push('/dashboard');
+        toast.success('Verification code successfully sent to the email');
+        router.push(`/sign-in/verify?email=${encodeURIComponent(values.email)}`);
       },
       onError: () => {
         form.setError('root', {

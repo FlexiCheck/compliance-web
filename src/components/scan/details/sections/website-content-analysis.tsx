@@ -1,5 +1,9 @@
+import ReactMarkdown from 'react-markdown';
+import rehypeSanitize from 'rehype-sanitize';
+
 import { WebsiteContentScreening } from '@/lib/_types';
 
+import { AISummaryText } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
@@ -13,7 +17,8 @@ const ContentScreeningAnalysis = ({
   return (
     <div className="bg-gray-50 p-4 rounded">
       <p className="text-gray-600 text-sm mb-2">{title}</p>
-      <p className="text-gray-800 text-sm whitespace-pre-line">{description}</p>
+      <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{description}</ReactMarkdown>
+      {/* <pre className="text-gray-800 text-sm whitespace-pre-line">{description}</pre> */}
     </div>
   );
 };
@@ -53,7 +58,7 @@ export const WebsiteContentAnalysis = ({
         </DetailsItem>
 
         <DetailsItem title="AI Analysis Summary">
-          <p className="text-gray-800 text-sm leading-relaxed whitespace-pre-line">{ai_summary}</p>
+          <AISummaryText text={ai_summary ?? ''} />
         </DetailsItem>
       </div>
     </DetailsAccordion>

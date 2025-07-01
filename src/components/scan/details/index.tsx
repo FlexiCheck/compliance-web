@@ -4,11 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import { getCachedTokenReport } from '@/app/server/actions/token';
 import { Accordion } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { AIRIskAnalysisCategory } from '@/lib/_types';
+import { getCachedTokenReport } from '@/server/actions/token';
 
 import { DetailsSkeleton } from './details-skeleton';
 import {
@@ -30,6 +30,8 @@ export const TokenDetails = () => {
     queryKey: ['cached-report'],
     queryFn: getCachedTokenReport,
     retry: false,
+    refetchOnMount: true,
+    staleTime: 0, // Consider all data stale immediately
   });
 
   if ($report.isLoading) {

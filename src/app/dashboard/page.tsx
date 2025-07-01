@@ -1,8 +1,8 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
-import { getCachedTokenReport } from '@/app/server/actions/token';
 import { TokenDetails } from '@/components/scan/details';
 import { getQueryClient } from '@/lib/query';
+import { getCachedTokenReport } from '@/server/actions/token';
 
 const DashboardPage = async () => {
   const queryClient = getQueryClient();

@@ -2,9 +2,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { User } from 'lucide-react';
 
-import { getUserAction } from '@/app/server/actions';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Skeleton } from '@/components/ui/skeleton';
+import { getUserAction } from '@/server/actions';
 
 export const UserProfile = () => {
   const $user = useQuery({

@@ -8,7 +8,7 @@ import {
 } from '@/lib/_types';
 import { cn, formatNumber } from '@/lib/utils';
 
-import { AIRisk } from '../../ai-risk';
+import { AIRisk, AISummaryText } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
 
@@ -122,7 +122,7 @@ export const MarketFundamentals = ({
           </div>
         </DetailsItem>
 
-        <DetailsItem title="Additional Metrics">
+        <DetailsItem title="Key Metrics">
           <div className="flex items-stretch mt-2 md:flex-nowrap flex-wrap gap-5">
             <DetailsSubItem title="Total Value Locked (24h)">
               <p className="text-lg font-semibold text-gray-500">
@@ -130,13 +130,13 @@ export const MarketFundamentals = ({
               </p>
             </DetailsSubItem>
 
-            <DetailsSubItem title="Total Value Locked (24h)">
+            <DetailsSubItem title="Unique Active Wallets (24h)">
               <p className="text-lg font-semibold text-gray-500">
                 {unique_active_wallets_24h ?? 'N/A'}
               </p>
             </DetailsSubItem>
 
-            <DetailsSubItem title="Total Value Locked (24h)">
+            <DetailsSubItem title="TVL Ratio">
               <p className="text-lg font-semibold text-gray-500">{tvl_ratio ?? 'N/A'}</p>
             </DetailsSubItem>
           </div>
@@ -165,9 +165,7 @@ export const MarketFundamentals = ({
         </DetailsItem>
 
         <DetailsItem title="AI Analysis Summary">
-          <p className="text-gray-800 text-sm leading-relaxed whitespace-pre-line mt-2">
-            {ai_summary}
-          </p>
+          <AISummaryText text={ai_summary ?? ''} />
         </DetailsItem>
       </div>
     </DetailsAccordion>

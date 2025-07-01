@@ -1,6 +1,12 @@
 import { CircleCheck, CircleX, TriangleAlert } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import rehypeSanitize from 'rehype-sanitize';
 
 import { AIRIskAnalysisCategory, RiskLevel } from '@/lib/_types';
+
+export const AISummaryText = ({ text }: { text: string }) => {
+  return <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{text}</ReactMarkdown>;
+};
 
 type Props = {
   ai_risk: AIRIskAnalysisCategory;
@@ -49,7 +55,7 @@ export const AIRisk = ({ ai_risk }: Props) => {
           </div>
         </div>
       </div>
-      <p className="text-gray-700 text-sm">{ai_risk.summary}</p>
+      <AISummaryText text={ai_risk.summary ?? ''} />
     </div>
   );
 };
