@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
 import { useMutation } from '@tanstack/react-query';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
@@ -82,4 +82,10 @@ const LoginVerify = () => {
   );
 };
 
-export default LoginVerify;
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginVerify />
+    </Suspense>
+  );
+}
