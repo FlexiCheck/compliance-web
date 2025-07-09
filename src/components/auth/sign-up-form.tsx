@@ -49,14 +49,14 @@ export const SignUpForm = () => {
 
   const onSubmit = (values: FormValues) => {
     $register.mutate(values, {
-      onSuccess: async () => {
-        router.push('/dashboard');
+      onSuccess: async ({ message }) => {
+        toast.success(message);
+        router.push(`/sign-up/check-email?email=${encodeURIComponent(values.email)}`);
       },
-      onError: (error) => {
+      onError: ({ message }) => {
         form.setError('root', {
-          message: 'Failed to register user',
+          message,
         });
-        toast.error(error.message);
       },
     });
   };

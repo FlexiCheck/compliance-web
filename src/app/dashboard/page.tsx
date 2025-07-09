@@ -10,6 +10,7 @@ const DashboardPage = async () => {
   await queryClient.prefetchQuery({
     queryKey: ['cached-report'],
     queryFn: getCachedTokenReport,
+    retry: false,
   });
 
   return (

@@ -1,12 +1,8 @@
 import { AlertCircle, Shield } from 'lucide-react';
 
-type Props = {
-  tokenName: string;
-};
-
-export const ScanningLoader = ({ tokenName }: Props) => {
+export const ScanningLoader = () => {
   return (
-    <div className="bg-white p-8 border rounded-md w-[670px] flex flex-col items-center justify-center gap-6">
+    <div className="bg-white p-8 border rounded-md w-full flex flex-col items-center justify-center gap-6">
       <div className="relative w-full h-[200px] bg-gray-50 rounded-lg overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-primary animate-scan" />
 
@@ -31,7 +27,6 @@ export const ScanningLoader = ({ tokenName }: Props) => {
           <p className="text-sm text-muted-foreground text-center mt-2">
             Both on-chain and off. This’ll take just a few minutes.
           </p>
-          <p className="text-sm text-muted-foreground text-center mt-2">Token: {tokenName}</p>
         </div>
       </div>
 

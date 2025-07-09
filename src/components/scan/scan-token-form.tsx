@@ -7,8 +7,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { ScanRouteProtection } from '@/components/scan/scan-route-protection';
-import { ScanningLoader } from '@/components/scan/scanning-loader';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -19,7 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { scanToken } from '@/server/actions/token';
+import { generateReportAction } from '@/server/actions/token';
 
 const formSchema = z.object({
   symbol: z.string().min(1).trim(),
@@ -47,16 +45,16 @@ export const ScanTokenForm = () => {
 
   const [symbol, url] = form.watch(['symbol', 'url']);
 
-  const $scanToken = useMutation({
-    mutationKey: ['scan-token'],
-    mutationFn: scanToken,
+  const $generateReport = useMutation({
+    mutationKey: ['generate-report'],
+    mutationFn: generateReportAction,
   });
 
   const onSubmit = async (values: FormValues) => {
-    $scanToken.mutate(values, {
+    $generateReport.mutate(values, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['cached-report'] });
-        toast.success(`Token: ${values.symbol} scanned successfully`);
+        queryClient.invalidateQueries({ queryKey: ['report-status'] });
+        toast.success(`Generating report started for token: ${values.symbol}`);
         router.push('/dashboard');
       },
       onError: () => {
@@ -64,15 +62,6 @@ export const ScanTokenForm = () => {
       },
     });
   };
-
-  if ($scanToken.isPending) {
-    return (
-      <>
-        <ScanRouteProtection isScanning={$scanToken.isPending} />
-        <ScanningLoader tokenName={symbol} />
-      </>
-    );
-  }
 
   return (
     <Form {...form}>
@@ -114,7 +103,12 @@ export const ScanTokenForm = () => {
           )}
         />
 
-        <Button type="submit" disabled={symbol === '' || url === ''} className="w-full">
+        <Button
+          type="submit"
+          disabled={symbol === '' || url === ''}
+          className="w-full"
+          isLoading={$generateReport.isPending}
+        >
           Run Analysis
         </Button>
       </form>
