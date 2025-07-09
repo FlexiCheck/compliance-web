@@ -1,15 +1,17 @@
 'use client';
 
+import { useState } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { loginAction } from '@/server/actions';
 
 import { AuthForm } from './auth-form';
+import { ResendVerificationLinkButton } from './resend-verification-link';
 
 const formSchema = z.object({
   email: z.string().email().trim(),
@@ -19,6 +21,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export const SignInForm = () => {
+  const [isUserVerified, setIsUserVerified] = useState(true);
+
   const router = useRouter();
   const form = useForm<FormValues>({
     defaultValues: {
@@ -28,6 +32,8 @@ export const SignInForm = () => {
     resolver: zodResolver(formSchema),
   });
 
+  const email = form.watch('email');
+
   const $login = useMutation({
     mutationKey: ['login'],
     mutationFn: loginAction,
@@ -36,12 +42,14 @@ export const SignInForm = () => {
   const onSubmit = async (values: FormValues) => {
     $login.mutate(values, {
       onSuccess: async () => {
-        toast.success('Verification code successfully sent to the email');
-        router.push(`/sign-in/verify?email=${encodeURIComponent(values.email)}`);
+        router.push('/dashboard');
       },
-      onError: () => {
+      onError: ({ message }) => {
+        if (message === 'User not active') {
+          setIsUserVerified(false);
+        }
         form.setError('root', {
-          message: 'Incorrect email or password',
+          message,
         });
         form.setError('email', {});
         form.setError('password', {});
@@ -49,5 +57,10 @@ export const SignInForm = () => {
     });
   };
 
-  return <AuthForm form={form} onSubmit={onSubmit} isLoading={$login.isPending} />;
+  return (
+    <div className="flex flex-col gap-3">
+      <AuthForm form={form} onSubmit={onSubmit} isLoading={$login.isPending} />
+      {!isUserVerified && email && <ResendVerificationLinkButton email={email} defaultTime={0} />}
+    </div>
+  );
 };

@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 import { request } from '@/lib/request';
 
-import { TAuthResponse, TLoginInitiateResponse, TUser } from './schema';
+import { TAuthResponse, TMessageResponse, TUser } from './schema';
 
 enum TokenKeys {
   accessToken = 'access-token',
@@ -38,38 +38,10 @@ type AuthActionInput = {
 };
 
 export const loginAction = async (input: AuthActionInput) => {
-  const response = await request(`${baseUrl}/auth/login/initiate`).post(
+  const response = await request(`${baseUrl}/auth/login`).post(
     {
       body: input,
       withoutAuth: true,
-    },
-    TLoginInitiateResponse
-  );
-
-  if (response.token) {
-    await setCookieToken(TokenKeys.initiateToken, response.token);
-  }
-
-  return response;
-};
-
-type LogonVerifyActionInput = {
-  email: string;
-  code: string;
-};
-
-export const loginVerifyAction = async (input: LogonVerifyActionInput) => {
-  const cookieStore = await cookies();
-  const headers = new Headers();
-  const initiateToken = cookieStore.get(TokenKeys.initiateToken)?.value;
-
-  headers.set('Authorization', `Bearer ${initiateToken}`);
-
-  const response = await request(`${baseUrl}/auth/login/verify`).post(
-    {
-      body: input,
-      withoutAuth: true,
-      headers,
     },
     TAuthResponse
   );
@@ -82,37 +54,28 @@ export const loginVerifyAction = async (input: LogonVerifyActionInput) => {
   return response;
 };
 
-export const resendCodeAction = async ({ email }: { email: string }) => {
-  const cookieStore = await cookies();
-  const headers = new Headers();
-  const initiateToken = cookieStore.get(TokenKeys.initiateToken)?.value;
+export const resendVerificationLinkAction = async ({ email }: { email: string }) => {
+  const query = new URLSearchParams();
 
-  headers.set('Authorization', `Bearer ${initiateToken}`);
+  query.set('email', email);
 
-  return await request(`${baseUrl}/auth/login/resend`).post({
-    body: {
-      email,
+  return await request(`${baseUrl}/auth/resend`).get(
+    {
+      query,
+      withoutAuth: true,
     },
-    headers,
-    withoutAuth: true,
-  });
+    TMessageResponse
+  );
 };
 
 export const registerAction = async (input: AuthActionInput) => {
-  const response = await request(`${baseUrl}/auth/register`).post(
+  return await request(`${baseUrl}/auth/register`).post(
     {
       body: input,
       withoutAuth: true,
     },
-    TAuthResponse
+    TMessageResponse
   );
-
-  if (response.access_token && response.refresh_token) {
-    await setCookieToken(TokenKeys.accessToken, response.access_token);
-    await setCookieToken(TokenKeys.refreshToken, response.refresh_token);
-  }
-
-  return response;
 };
 
 export const getUserAction = async () => {

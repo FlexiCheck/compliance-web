@@ -1,10 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type RequestErrorTypes = 'client' | 'server' | 'decode_error' | 'network';
 
-export type RequestError = TypeError & {
+export class RequestError extends Error {
   type: RequestErrorTypes;
-  errors?: Record<string, string>;
-};
+  errors?: any;
+  constructor({
+    type,
+    message,
+    errors,
+  }: {
+    type: RequestErrorTypes;
+    message: string;
+    name?: string;
+    errors?: any;
+  }) {
+    super(message);
+    this.type = type;
+    this.errors = errors;
+  }
+}
 
-export const requestError = (error: RequestError): RequestError => {
-  return error;
-};
+export function requestError(args: { type: RequestErrorTypes; message: string; errors?: any }) {
+  return new RequestError(args);
+}

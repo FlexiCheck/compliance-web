@@ -11,6 +11,6 @@ export const TUser = z.object({
   email: z.string(),
 });
 
-export const TLoginInitiateResponse = z.object({
-  token: z.string(),
+export const TMessageResponse = z.object({
+  message: z.string(),
 });
