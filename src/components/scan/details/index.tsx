@@ -13,14 +13,11 @@ export const TokenDetails = () => {
     queryKey: ['report-status'],
     queryFn: getReportStatusAction,
     refetchInterval: (data) => {
-      console.log({ data });
       if (!data || data.state.data?.status === 'processing') return 5000;
       return false;
     },
     retry: false,
   });
-
-  console.log($reportStatus.data);
 
   if ($reportStatus.isPending) {
     return <DetailsSkeleton />;
