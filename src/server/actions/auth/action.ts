@@ -12,7 +12,7 @@ enum TokenKeys {
 }
 
 const duration = 24 * 60 * 60 * 1000;
-const baseUrl = process.env.API_BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const setCookieToken = async (token: string, value: string) => {
   const cookieStore = await cookies();
@@ -38,7 +38,7 @@ type AuthActionInput = {
 };
 
 export const loginAction = async (input: AuthActionInput) => {
-  const response = await request(`${baseUrl}/auth/login`).post(
+  const response = await request('/auth/login').post(
     {
       body: input,
       withoutAuth: true,

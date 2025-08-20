@@ -6,14 +6,21 @@ import { Button } from '../ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 
-type AuthFields = { email: string; password: string };
+type AuthFields = {
+  username?: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+};
+
 type Props<T extends AuthFields> = {
   form: UseFormReturn<T>;
   onSubmit: (values: T) => void;
   isLoading?: boolean;
+  mode: 'signin' | 'signup';
 };
 
-export const AuthForm = <T extends AuthFields>({ form, onSubmit, isLoading }: Props<T>) => {
+export const AuthForm = <T extends AuthFields>({ form, onSubmit, isLoading, mode }: Props<T>) => {
   const email = form.watch('email' as Path<T>);
   const password = form.watch('password' as Path<T>);
   const rootError = form.formState.errors.root?.message;
@@ -22,7 +29,7 @@ export const AuthForm = <T extends AuthFields>({ form, onSubmit, isLoading }: Pr
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 min-w-[300px] md:min-w-[400px]"
+        className="space-y-6 min-w-[300px] md:min-w-[400px]"
       >
         {rootError && (
           <Alert variant="destructive">
@@ -30,6 +37,24 @@ export const AuthForm = <T extends AuthFields>({ form, onSubmit, isLoading }: Pr
             <AlertTitle>{rootError}</AlertTitle>
           </Alert>
         )}
+
+        {/* Only show Username for signup */}
+        {mode === 'signup' && (
+          <FormField
+            control={form.control}
+            name={'username' as Path<T>}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="Enter your username" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <FormField
           control={form.control}
           name={'email' as Path<T>}
@@ -58,13 +83,30 @@ export const AuthForm = <T extends AuthFields>({ form, onSubmit, isLoading }: Pr
           )}
         />
 
+        {/* Only show confirmPassword for signup */}
+        {mode === 'signup' && (
+          <FormField
+            control={form.control}
+            name={'confirmPassword' as Path<T>}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="Confirm your password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <Button
           type="submit"
           disabled={email === '' || password === '' || isLoading}
           className="w-full"
           isLoading={isLoading}
         >
-          Submit
+          {mode === 'signin' ? 'Sign In' : 'Sign Up'}
         </Button>
       </form>
     </Form>
