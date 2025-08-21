@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { generateReportAction } from '@/server/actions/token';
+import { runAnalysisAction } from '@/lib/api/dashboard';
 
 const formSchema = z.object({
   symbol: z.string().min(1).trim(),
@@ -47,15 +47,24 @@ export const ScanTokenForm = () => {
 
   const $generateReport = useMutation({
     mutationKey: ['generate-report'],
-    mutationFn: generateReportAction,
+    mutationFn: runAnalysisAction,
   });
 
   const onSubmit = async (values: FormValues) => {
     $generateReport.mutate(values, {
-      onSuccess: () => {
+      onSuccess: (res) => {
         queryClient.invalidateQueries({ queryKey: ['report-status'] });
-        toast.success(`Generating report started for token: ${values.symbol}`);
-        router.push('/dashboard');
+        toast.success(`Generating report started for token: `);
+        //Now sending the encoded url in the query params
+        const queryParams = new URLSearchParams({
+          url: url ? url : '',
+          tokenAddress: res?.token_overview?.token_contract
+            ? res?.token_overview?.token_contract
+            : '',
+          chainId: res?.token_overview?.chainId ? res?.token_overview?.chainId : '',
+          tokenName: symbol,
+        }).toString();
+        router.push(`/dashboard?${queryParams}`);
       },
       onError: () => {
         toast.error('Failed to scan token: Please make sure to insert the correct token name.');

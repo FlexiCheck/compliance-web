@@ -1,22 +1,23 @@
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import ClientDashboard from '@/components/scan/dashboardClient';
 
-import { TokenDetails } from '@/components/scan/details';
-import { getQueryClient } from '@/lib/query';
-import { getCachedTokenReport } from '@/server/actions/token';
+type Props = {
+  searchParams: { [key: string]: string | undefined };
+};
 
-const DashboardPage = async () => {
-  const queryClient = getQueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: ['cached-report'],
-    queryFn: getCachedTokenReport,
-    retry: false,
-  });
+const DashboardPage = async ({ searchParams }: Props) => {
+  const resolvedSearchParams = searchParams;
+  const url = resolvedSearchParams.url;
+  const tokenAddress = resolvedSearchParams.tokenAddress;
+  const chainId = resolvedSearchParams.chainId;
+  const tokenName = resolvedSearchParams.tokenName;
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <TokenDetails />
-    </HydrationBoundary>
+    <ClientDashboard
+      url={url}
+      tokenAddress={tokenAddress}
+      chainId={chainId}
+      tokenName={tokenName}
+    />
   );
 };
 

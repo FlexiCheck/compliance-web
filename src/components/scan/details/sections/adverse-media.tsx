@@ -1,11 +1,45 @@
-import { AdverseMediaAnalysis, AdverseMediaSentiment, AIRIskAnalysisCategory } from '@/lib/_types';
+import {
+  AdverseMediaAnalysis,
+  AdverseMediaSentiment,
+  AIRIskAnalysisCategory,
+  RiskLevel,
+} from '@/lib/_types';
 import { adverseMediaSentimentColors, formatDate } from '@/lib/utils';
 
 import { AIRisk } from '../../ai-risk';
 import { DetailsAccordion } from '../details-accordion';
 import { DetailsItem } from '../details-item';
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getProjectAdverseMediaContent } from '@/lib/api/dashboard';
 
-const AdverseMediaArticle = (adverseMedia: AdverseMediaAnalysis | null) => {
+interface MediaItem {
+  source: string;
+  date: string;
+  title: string;
+  summary: string;
+  url: string;
+  sentiment: string;
+  risk_level: string;
+}
+
+type Props = {
+  tokenName: string;
+};
+
+interface enrichedDataSchema {
+  ai_risk: string | null;
+  totalArticles: number;
+  positivePercentage: number;
+  neutralPercentage: number;
+  negativePercentage: number;
+  category: string;
+  riskLevel: RiskLevel;
+  complianceSummary: string;
+  mediaItems: MediaItem[];
+}
+
+const AdverseMediaArticle = (adverseMedia: MediaItem | null) => {
   const sentiment = adverseMedia?.sentiment?.toLowerCase() as AdverseMediaSentiment;
   const color = adverseMediaSentimentColors[sentiment ?? 'neutral'];
 
@@ -42,44 +76,94 @@ const AdverseMediaArticle = (adverseMedia: AdverseMediaAnalysis | null) => {
   );
 };
 
-type Props = {
-  adverseMedias: AdverseMediaAnalysis[] | null;
-  ai_risk: AIRIskAnalysisCategory;
-};
+export const AdverseMedia = ({ tokenName }: Props) => {
+  const [enrichedData, setEnrichedData] = useState<enrichedDataSchema | null>(null);
 
-export const AdverseMedia = ({ adverseMedias, ai_risk }: Props) => {
-  const total = adverseMedias?.length || 0;
-  const positive = adverseMedias?.filter((article) => article.sentiment === 'positive').length || 0;
-  const neutral = adverseMedias?.filter((article) => article.sentiment === 'neutral').length || 0;
-  const negative = adverseMedias?.filter((article) => article.sentiment === 'negative').length || 0;
+  const $projectAdverseMediaReport = useQuery({
+    queryKey: ['project-adverse-media', tokenName], // Include URL in query key for caching
+    queryFn: () => getProjectAdverseMediaContent({ tokenName }),
+    enabled: !!tokenName, // Only run query if URL exists
+    retry: false,
+  });
 
-  const positivePercentage = total ? Math.round((positive / total) * 100) : 0;
-  const neutralPercentage = total ? Math.round((neutral / total) * 100) : 0;
-  const negativePercentage = total ? Math.round((negative / total) * 100) : 0;
+  // Error state
+  if ($projectAdverseMediaReport.isError) {
+    return (
+      <p className="text-red-300 font-bold">
+        Failed to fetch report status:{' '}
+        {$projectAdverseMediaReport.error?.message || 'Unknown error'}
+      </p>
+    );
+  }
+
+  const initData = () => {
+    if (!$projectAdverseMediaReport.data) return;
+
+    const apiData = $projectAdverseMediaReport.data;
+
+    const enrichedObject: enrichedDataSchema = {
+      ai_risk: apiData.riskLevel,
+      totalArticles: apiData?.totalArticles,
+      positivePercentage: apiData?.totalArticles
+        ? Math.round((apiData.sentimentDistribution.positive / apiData.totalArticles) * 100)
+        : 0,
+      negativePercentage: apiData?.totalArticles
+        ? Math.round((apiData.sentimentDistribution.negative / apiData.totalArticles) * 100)
+        : 0,
+      neutralPercentage: apiData?.totalArticles
+        ? Math.round((apiData.sentimentDistribution.neutral / apiData.totalArticles) * 100)
+        : 0,
+      mediaItems: apiData.mediaItems,
+      category: apiData.category,
+      riskLevel: apiData.riskLevel,
+      complianceSummary: apiData.complianceSummary,
+    };
+    setEnrichedData(enrichedObject);
+  };
+
+  useEffect(() => {
+    if ($projectAdverseMediaReport.isSuccess) {
+      initData();
+    }
+  }, [$projectAdverseMediaReport.isSuccess, $projectAdverseMediaReport.data]);
 
   return (
     <DetailsAccordion title="Adverse Media">
       <div className="w-full space-y-5">
-        {ai_risk && <AIRisk ai_risk={ai_risk} />}
+        {enrichedData?.ai_risk && (
+          <AIRisk
+            ai_risk={{
+              category: enrichedData?.category,
+              risk_level: enrichedData?.riskLevel,
+              summary: enrichedData?.complianceSummary,
+            }}
+          />
+        )}
 
         <DetailsItem title="Total Articles">
-          <p className="text-2xl font-bold text-blue-600">{total}</p>
+          <p className="text-2xl font-bold text-blue-600">{enrichedData?.totalArticles}</p>
         </DetailsItem>
 
         <DetailsItem title="Total Articles">
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
-              <p className="text-lg font-semibold text-green-600">{positivePercentage}%</p>
+              <p className="text-lg font-semibold text-green-600">
+                {enrichedData?.positivePercentage}%
+              </p>
               <p className="text-sm text-gray-500">Positive</p>
             </div>
 
             <div className="text-center">
-              <p className="text-lg font-semibold text-gray-600">{neutralPercentage}%</p>
+              <p className="text-lg font-semibold text-gray-600">
+                {enrichedData?.neutralPercentage}%
+              </p>
               <p className="text-sm text-gray-500">Neutral</p>
             </div>
 
             <div className="text-center">
-              <p className="text-lg font-semibold text-red-600">{negativePercentage}%</p>
+              <p className="text-lg font-semibold text-red-600">
+                {enrichedData?.negativePercentage}%
+              </p>
               <p className="text-sm text-gray-500">Negative</p>
             </div>
           </div>
@@ -87,7 +171,7 @@ export const AdverseMedia = ({ adverseMedias, ai_risk }: Props) => {
 
         <DetailsItem title="Recent Articles">
           <div className="space-y-3 mt-2">
-            {adverseMedias?.map((article) => (
+            {enrichedData?.mediaItems?.map((article) => (
               <AdverseMediaArticle key={article.url} {...article} />
             ))}
           </div>

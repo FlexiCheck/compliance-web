@@ -6,7 +6,7 @@ import { request } from '@/lib/request';
 
 import { TReportSchema } from './schema';
 
-const baseUrl = process.env.API_BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const getCachedTokenReport = async () => {
   return await request(`${baseUrl}/compliance/cached_report`).get({}, z.any());

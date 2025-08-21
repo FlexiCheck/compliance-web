@@ -15,14 +15,16 @@ export type AIRiskANalysisSummary = Nullable<{
 }>;
 
 export type TokenOverviewAnalysis = Nullable<{
-  ticker: string;
-  price: string;
-  market_cap: string;
-  volume_24h: string;
-  website: string;
-  token_contract: string;
-  socials: Record<string, string>;
-  description: string;
+  ticker: string | null;
+  price: string | null;
+  market_cap: string | null;
+  volume_24h: string | null;
+  website: string | null;
+  token_contract: string | null;
+  socials: {
+    coinGecko: string | null;
+  } | null;
+  description: string | null;
 }>;
 
 export type SecurityCheckColor = 'red' | 'orange' | 'green';
@@ -165,4 +167,64 @@ export type WebsiteContentScreening = Nullable<{
   landing_page_analysis: string;
   cookie_policy_analysis: string;
   privacy_policy_analysis: string;
+}>;
+
+export type ProjectOverviewData = Nullable<{
+  token_overview: TokenOverviewAnalysis;
+  description: string | null;
+  github_info: {
+    profile_url: string | null;
+    account_age: string | null;
+    impact_indicator: string | null;
+    stars_earned: string | null;
+  } | null;
+  market_fundamentals: {
+    token_price: string | null;
+    low: string | null;
+    high: string | null;
+    volume_24h: string | null;
+    market_cap: string | null;
+    volume_by_exchange_type_24h: {
+      CEX: string | null;
+      DEX: string | null;
+    } | null;
+    cex_info: Array<{
+      name: string;
+      daily_netflow: string | null;
+      market_cap_held: string | null;
+    }> | null;
+    total_value_locked_24h: string | null;
+    unique_active_wallets_24h: string | null;
+    tvl_ratio: string | null;
+    ai_summary: string | null;
+  } | null;
+  fundamentals: {
+    total_active_users_7d: number | null;
+    token_transferred_7d: number | null;
+    total_transactions_7d: number | null;
+  } | null;
+  operational: {
+    contract_address: string | null;
+    active_users_24h: string | null;
+    transactions_24h: string | null;
+    gas_consumed_24h: string | null;
+    contract_risks: Array<{
+      name: string;
+      severity: string;
+      description: string;
+    }> | null;
+  } | null;
+  token_holder_analysis: {
+    total_holders: number | null;
+    whale_movement_indicator: string | null;
+  } | null;
+  community_info: {
+    twitter: {
+      activity_indicator: string | null;
+      followers_24h: string | null;
+      account_age: string | null;
+      total_tweets_24h: string | null;
+    } | null;
+    telegram: any | null;
+  } | null;
 }>;
