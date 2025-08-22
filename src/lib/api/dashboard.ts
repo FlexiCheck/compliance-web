@@ -2,12 +2,11 @@ import { createRequest } from '../request/create-request';
 
 export const runAnalysisAction = async (input: { symbol: string; url: string }) => {
   try {
-    const query = new URLSearchParams({ name: input.url });
+    const name = input.symbol.toLowerCase();
     const response = await createRequest(
       'GET',
-      '/reports/project-overview'
+      `/reports/project-overview?name=${name}`
     )({
-      query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
     return response.data;
@@ -16,14 +15,14 @@ export const runAnalysisAction = async (input: { symbol: string; url: string }) 
   }
 };
 
-export const getProjectOverview = async (input: { url: string }) => {
+export const getProjectOverview = async (input: { symbol: string }) => {
   try {
-    const query = new URLSearchParams({ name: input.url });
+    const name = input.symbol.toLowerCase();
+
     const response = await createRequest(
       'GET',
-      '/reports/project-overview'
+      `/reports/project-overview?name=${name}`
     )({
-      query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
     return response.data;
@@ -32,14 +31,14 @@ export const getProjectOverview = async (input: { url: string }) => {
   }
 };
 
-export const getProjectSecurity = async (input: { url: string }) => {
+export const getProjectSecurity = async (input: { symbol: string }) => {
   try {
-    const query = new URLSearchParams({ name: input.url });
+    const name = input.symbol.toLowerCase();
+
     const response = await createRequest(
       'GET',
-      '/reports/project-security'
+      `/reports/project-security?name=${name}`
     )({
-      query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
     return response.data;
@@ -51,14 +50,10 @@ export const getProjectSecurity = async (input: { url: string }) => {
 export const getProjectDomain = async (input: { url: string }) => {
   try {
     const clean_query: any = extractDomain(input.url);
-    console.log({ clean_query });
-
-    const query = new URLSearchParams({ domain: clean_query });
     const response = await createRequest(
       'GET',
-      '/reports/domain'
+      `/reports/domain?domain=${clean_query}`
     )({
-      query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
     return response.data;
@@ -68,15 +63,11 @@ export const getProjectDomain = async (input: { url: string }) => {
 };
 
 export const getProjectWebContent = async (input: { url: string }) => {
-  console.log('getProjectWebContent', input);
-
   try {
-    const query = new URLSearchParams({ url: input.url });
     const response = await createRequest(
       'GET',
-      '/reports/web-analysis'
+      `/reports/web-analysis?url=${input.url}`
     )({
-      query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
     return response.data;
@@ -87,12 +78,10 @@ export const getProjectWebContent = async (input: { url: string }) => {
 
 export const getProjectAdverseMediaContent = async (input: { tokenName: string }) => {
   try {
-    const query = new URLSearchParams({ tokenName: input.tokenName, tokenSymbol: input.tokenName });
     const response = await createRequest(
       'GET',
-      '/reports/adverse-media'
+      `/reports/adverse-media?tokenName=${input.tokenName}&tokenSymbol=${input.tokenName}`
     )({
-      query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
     return response.data;

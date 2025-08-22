@@ -49,7 +49,12 @@ export const Report = ({
       <Accordion type="single" collapsible>
         <div className="space-y-5 pb-8">
           {/* <AiRiskAnalysis ai_risk_analysis={report?.ai_risk_analysis ?? {}} /> */}
-          <TokenReview tokenAddress={tokenAddress} chainId={chainId} url={url} />
+          <TokenReview
+            tokenAddress={tokenAddress}
+            chainId={chainId}
+            url={url}
+            tokenName={tokenName}
+          />
 
           <MarketFundamentals
             marketFundamentals={projectOverviewData.market_fundamentals}

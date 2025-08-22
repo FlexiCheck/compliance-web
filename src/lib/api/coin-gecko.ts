@@ -1,11 +1,8 @@
-type CoinGeckoResponse = {};
-
 export const coinGeckoDatafetcher = async (tokenAddress: string, chain: string): Promise<any> => {
   // Determine the platform based on chainId - defaulting to ethereum for now
-  const platform = 'eth';
-  const token_address = '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE';
+
   const response = await fetch(
-    `https://api.coingecko.com/api/v3/coins/${platform}/contract/${token_address}`,
+    `https://api.coingecko.com/api/v3/coins/${chain}/contract/${tokenAddress}`,
     {
       headers: {
         'x-cg-demo-api-key': 'CG-x2hRCfce3dE94sRRhLFZGbA3',
@@ -21,9 +18,8 @@ export const coinGeckoDatafetcher = async (tokenAddress: string, chain: string):
 };
 
 export const fetchTop10HoldersRatio = async (tokenAddress: string): Promise<any> => {
-  const token_address = '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE';
   const response = await fetch(
-    `https://deep-index.moralis.io/api/v2.2/erc20/${token_address}/owners?limit=10`,
+    `https://deep-index.moralis.io/api/v2.2/erc20/${tokenAddress}/owners?limit=10`,
     {
       headers: {
         'X-API-Key':
@@ -40,11 +36,8 @@ export const fetchTop10HoldersRatio = async (tokenAddress: string): Promise<any>
 };
 
 export const fetchUniqueWallets24h = async (tokenAddress: string, chain: string): Promise<any> => {
-  const token_address = '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE';
-  const platform = 'eth';
-
   const response = await fetch(
-    `https://deep-index.moralis.io/api/v2.2/tokens/${token_address}/analytics?chain=${platform}`,
+    `https://deep-index.moralis.io/api/v2.2/tokens/${tokenAddress}/analytics?chain=${chain}`,
     {
       headers: {
         'X-API-Key':
@@ -61,10 +54,8 @@ export const fetchUniqueWallets24h = async (tokenAddress: string, chain: string)
 };
 
 export const fetchTotalHolders = async (tokenAddress: string): Promise<any> => {
-  const token_address = '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE';
-
   const response = await fetch(
-    `https://deep-index.moralis.io/api/v2.2/erc20/${token_address}/holders`,
+    `https://deep-index.moralis.io/api/v2.2/erc20/${tokenAddress}/holders`,
     {
       headers: {
         'X-API-Key':
@@ -84,11 +75,8 @@ export const fetchActiveUsersAndTransactions = async (
   tokenAddress: string,
   chain: string
 ): Promise<any> => {
-  const token_address = '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE';
-  const platform = 'eth';
-
   const response = await fetch(
-    `https://deep-index.moralis.io/api/v2.2/tokens/${token_address}/analytics?chain=${platform}`,
+    `https://deep-index.moralis.io/api/v2.2/tokens/${tokenAddress}/analytics?chain=${chain}`,
     {
       headers: {
         'X-API-Key':
@@ -105,11 +93,8 @@ export const fetchActiveUsersAndTransactions = async (
 };
 
 export const fetchDeployDate = async (tokenAddress: string, chain: string): Promise<any> => {
-  const token_address = '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE';
-  const platform = 'eth';
-
   const response = await fetch(
-    `https://deep-index.moralis.io/api/v2.2/erc20/metadata?chain=${platform}&addresses=${token_address}`,
+    `https://deep-index.moralis.io/api/v2.2/erc20/metadata?chain=${chain}&addresses=${tokenAddress}`,
     {
       headers: {
         'X-API-Key':

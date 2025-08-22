@@ -12,22 +12,15 @@ type Props = {
   url: string | undefined;
   tokenAddress: string | undefined;
   chainId: string | undefined;
-  token_overview?: TokenOverviewAnalysis; // Add if needed
   tokenName: string | undefined;
 };
 
-const ClientDashboard: React.FC<Props> = ({
-  url,
-  tokenAddress,
-  chainId,
-  token_overview,
-  tokenName,
-}) => {
+const ClientDashboard: React.FC<Props> = ({ url, tokenAddress, chainId, tokenName }) => {
   const router = useRouter();
 
   // Strict check for null or undefined
   // if (!url || !tokenAddress || !chainId) {
-  if (url == null || tokenAddress == null || chainId == null || tokenName == null) {
+  if (!url || !tokenAddress || !chainId || !tokenName) {
     return (
       <EmptyState
         icon={AlertCircle}

@@ -38,6 +38,7 @@ type Props = {
   tokenAddress: string | null | undefined;
   chainId: string;
   url: string;
+  tokenName: string;
 };
 
 // Type for your security report data
@@ -56,14 +57,14 @@ type SecurityReportData = {
   proxy_contract?: string;
 };
 
-export const TokenReview = ({ tokenAddress, chainId, url }: Props) => {
+export const TokenReview = ({ tokenAddress, chainId, url, tokenName }: Props) => {
   //our state that will contain all the data
   const [enrichedData, setEnrichedData] = useState<SecurityReportData | null>(null);
 
   //query to get data from the backend
   const $projectSecurityReport = useQuery({
-    queryKey: ['project-security', url], // Include URL in query key for caching
-    queryFn: () => getProjectSecurity({ url }),
+    queryKey: ['project-security', tokenName], // Include URL in query key for caching
+    queryFn: () => getProjectSecurity({ symbol: tokenName }),
     enabled: !!url, // Only run query if URL exists
     retry: false,
   });

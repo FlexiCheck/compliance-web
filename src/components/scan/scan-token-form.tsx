@@ -61,8 +61,10 @@ export const ScanTokenForm = () => {
           tokenAddress: res?.token_overview?.token_contract
             ? res?.token_overview?.token_contract
             : '',
-          chainId: res?.token_overview?.chainId ? res?.token_overview?.chainId : '',
-          tokenName: symbol,
+          chainId: res?.token_overview?.chain_symbol
+            ? res?.token_overview?.chain_symbol?.toLowerCase()
+            : '',
+          tokenName: symbol ? symbol?.toLowerCase() : '',
         }).toString();
         router.push(`/dashboard?${queryParams}`);
       },

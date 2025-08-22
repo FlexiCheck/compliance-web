@@ -16,8 +16,8 @@ export const TokenDetails = ({ url, tokenAddress, chainId, tokenName }: props) =
   //Since all the data is not loaded at once:
   //We would only fetch the basic data and lets show that
   const $projectOverviewReport = useQuery({
-    queryKey: ['project-overview', url], // Include URL in query key for caching
-    queryFn: () => getProjectOverview({ url }),
+    queryKey: ['project-overview', tokenName], // Include URL in query key for caching
+    queryFn: () => getProjectOverview({ symbol: tokenName }),
     enabled: !!url, // Only run query if URL exists
     retry: false,
   });
@@ -39,13 +39,11 @@ export const TokenDetails = ({ url, tokenAddress, chainId, tokenName }: props) =
     );
   }
 
-  const token_address = $projectOverviewReport?.data?.token_overview?.token_contract;
-
   return (
     <Report
       isFailed={$projectOverviewReport.isError}
       projectOverviewData={$projectOverviewReport.data}
-      tokenAddress={token_address}
+      tokenAddress={tokenAddress}
       chainId={chainId}
       url={url}
       tokenName={tokenName}
