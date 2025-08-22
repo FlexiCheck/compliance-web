@@ -1,11 +1,8 @@
 'use client';
 
-import { useMutation } from '@tanstack/react-query';
 import { LogOut, User } from 'lucide-react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-
-import { logoutAction, removeTokenCookies } from '@/server/actions';
+import { useRouter } from 'next/navigation';
 
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import {
@@ -16,10 +13,16 @@ import {
 } from '../ui/dropdown-menu';
 
 export const UserButton = () => {
-  const $logout = useMutation({
-    mutationKey: ['logout'],
-    mutationFn: logoutAction,
-  });
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Remove tokens from localStorage
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+
+    // Redirect to sign-in page
+    router.push('/sign-in');
+  };
 
   return (
     <DropdownMenu>
@@ -36,17 +39,7 @@ export const UserButton = () => {
             Profile <User />
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="justify-between"
-          onClick={() => {
-            $logout.mutate(undefined, {
-              onSuccess: async () => {
-                await removeTokenCookies();
-                redirect('/sign-in');
-              },
-            });
-          }}
-        >
+        <DropdownMenuItem className="justify-between" onClick={handleLogout}>
           Logout <LogOut />
         </DropdownMenuItem>
       </DropdownMenuContent>
