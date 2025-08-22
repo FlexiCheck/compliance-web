@@ -78,7 +78,6 @@ export const WebsiteContentAnalysis = ({ url }: Props) => {
       initData();
     }
   }, [$projectWebContentReport.isSuccess, $projectWebContentReport.data]);
-
   return (
     <DetailsAccordion title="Website Content Analysis">
       <div className="w-full space-y-5">

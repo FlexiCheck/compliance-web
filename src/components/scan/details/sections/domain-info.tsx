@@ -52,12 +52,12 @@ export const DomainInfo = ({ tokenAddress, chainId, url }: Props) => {
     const enrichedObject: enrichedDataSchema = {
       domain: apiData.domain || null,
       registrar: apiData.registrar || null,
-      domain_status: apiData.domain_status || null,
-      registered_date: apiData.registered_date || null,
-      updated_date: apiData.updated_date || null,
-      expiry_date: apiData.expiry_date || null,
-      name_servers: apiData.name_servers || [],
-      ai_summary: apiData.ai_summary || '',
+      domain_status: apiData.domainStatus || null,
+      registered_date: apiData.registeredDate || null,
+      updated_date: apiData.updatedDate || null,
+      expiry_date: apiData.expiryDate || null,
+      name_servers: apiData.nameServers || [],
+      ai_summary: apiData.aiSummary || '',
     };
 
     setEnrichedData(enrichedObject);

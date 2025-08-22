@@ -35,7 +35,7 @@ const SecurityCheckItem = ({
 };
 
 type Props = {
-  tokenAddress: string;
+  tokenAddress: string | null | undefined;
   chainId: string;
   url: string;
 };
@@ -57,8 +57,10 @@ type SecurityReportData = {
 };
 
 export const TokenReview = ({ tokenAddress, chainId, url }: Props) => {
+  //our state that will contain all the data
   const [enrichedData, setEnrichedData] = useState<SecurityReportData | null>(null);
 
+  //query to get data from the backend
   const $projectSecurityReport = useQuery({
     queryKey: ['project-security', url], // Include URL in query key for caching
     queryFn: () => getProjectSecurity({ url }),
@@ -66,7 +68,7 @@ export const TokenReview = ({ tokenAddress, chainId, url }: Props) => {
     retry: false,
   });
 
-  // Check if we need to fetch external data
+  // Here we will check if the fields that can be fethced from external api sources are empty. If any of the field is empty, we will fetch values from there
   const needsExternalData = (data: SecurityReportData | null): boolean => {
     if (!data) return false;
     return !data.major_holders_ratio || !data.top_10_holders_ratio;
@@ -85,13 +87,13 @@ export const TokenReview = ({ tokenAddress, chainId, url }: Props) => {
     isSuccess,
   } = useQuery({
     queryKey: ['external-security-top-10', tokenAddress],
-    queryFn: () => fetchTop10HoldersRatio(tokenAddress),
+    queryFn: () => fetchTop10HoldersRatio(tokenAddress || ''),
     enabled: shouldFetchExternal, // Only fetch if we need external data
     retry: 2,
     staleTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  //Calling
+  // This useEffect runs whenever the data is fetched successfully from the query, then we set the data
   useEffect(() => {
     if ($projectSecurityReport.isSuccess && $projectSecurityReport.data) {
       const baseData = $projectSecurityReport.data;
@@ -101,12 +103,12 @@ export const TokenReview = ({ tokenAddress, chainId, url }: Props) => {
         const updatedData: SecurityReportData = {
           ...baseData,
           // Only override if the original data was missing or unknow
-          top_10_holders_ratio:
-            baseData.top_10_holders_ratio ||
-            externalSecurityData?.result?.reduce(
-              (acc: number, curr: any) => acc + curr?.percentage_relative_to_total_supply,
-              0
-            ),
+          top_10_holders_ratio: baseData?.top_10_holders_ratio
+            ? baseData?.top_10_holders_ratio
+            : externalSecurityData?.result?.reduce(
+                (acc: number, curr: any) => acc + curr?.percentage_relative_to_total_supply,
+                0
+              ),
         };
         setEnrichedData(updatedData);
       } else if (!shouldFetchExternal) {
@@ -121,6 +123,7 @@ export const TokenReview = ({ tokenAddress, chainId, url }: Props) => {
     externalSecurityData,
     shouldFetchExternal,
   ]);
+
   if (!enrichedData && !isLoading) {
     return <div>No token overview data available</div>;
   }
@@ -131,7 +134,7 @@ export const TokenReview = ({ tokenAddress, chainId, url }: Props) => {
         {/* {ai_risk && <AIRisk ai_risk={ai_risk} />} */}
         <DetailsItem title="Contract Address">
           <div className="text-xs font-mono bg-gray-100 p-2 rounded break-all mt-1">
-            {tokenAddress ?? 'N/A'}
+            {tokenAddress || 'N/A'}
           </div>
         </DetailsItem>
 

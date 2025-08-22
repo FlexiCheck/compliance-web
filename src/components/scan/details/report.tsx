@@ -44,11 +44,7 @@ export const Report = ({
         </div>
       )}
 
-      <TokenOverview
-        token_overview={projectOverviewData.token_overview}
-        tokenAddress={tokenAddress}
-        chainId={chainId}
-      />
+      <TokenOverview token_overview={projectOverviewData.token_overview} chainId={chainId} />
 
       <Accordion type="single" collapsible>
         <div className="space-y-5 pb-8">

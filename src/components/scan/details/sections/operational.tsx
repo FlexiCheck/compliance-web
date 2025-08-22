@@ -94,7 +94,7 @@ export const Operational = ({ operational, tokenAddress, chainId }: Props) => {
   const shouldFetchMoralisApiOne: boolean =
     (enrichedData && needsMoralisApiOneData(enrichedData)) || false;
   const shouldFetchMoralisApiTwo: boolean =
-    (enrichedData && needsMoralisApiOneData(enrichedData)) || false;
+    (enrichedData && needsMoralisApiTwoData(enrichedData)) || false;
 
   const updateWithMoralisApiOneData = (moralApiOneResponse: any) => {
     if (!enrichedData || hasUpdatedMoralisOne) return;
@@ -121,8 +121,8 @@ export const Operational = ({ operational, tokenAddress, chainId }: Props) => {
     if (!enrichedData || hasUpdatedMoralisTwo) return;
     const updatedData = { ...enrichedData };
 
-    if (!updatedData.deploy_date && moralApiTwoResponse.created_at) {
-      updatedData.deploy_date = moralApiTwoResponse.created_at;
+    if (!updatedData.deploy_date && moralApiTwoResponse[0].created_at) {
+      updatedData.deploy_date = moralApiTwoResponse[0].created_at;
     }
     setEnrichedData(updatedData);
     setHasUpdatedMoralisTwo(true);
@@ -156,7 +156,7 @@ export const Operational = ({ operational, tokenAddress, chainId }: Props) => {
     error: errorMoralisTwo,
     isSuccess: isSuccessMoralisTwo,
   } = useQuery({
-    queryKey: ['moralis-operational-one', tokenAddress, chainId],
+    queryKey: ['moralis-operational-two', tokenAddress, chainId],
     queryFn: () => fetchDeployDate(tokenAddress, chainId),
     enabled: shouldFetchMoralisApiTwo,
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -174,7 +174,7 @@ export const Operational = ({ operational, tokenAddress, chainId }: Props) => {
   // Update enriched data when Moralis data is available
   useEffect(() => {
     if (isSuccessMoralisTwo && moralisDataTwo) {
-      updateWithMoralisApiOneData(moralisDataTwo);
+      updateWithMoralisApiTwoData(moralisDataTwo);
     }
   }, [isSuccessMoralisTwo, moralisDataTwo]);
 

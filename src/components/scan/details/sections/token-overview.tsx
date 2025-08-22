@@ -12,11 +12,10 @@ import { useEffect, useState } from 'react';
 
 type Props = {
   token_overview: TokenOverviewAnalysis | null;
-  tokenAddress: string;
   chainId: string;
 };
 
-export const TokenOverview = ({ token_overview, tokenAddress, chainId }: Props) => {
+export const TokenOverview = ({ token_overview, chainId }: Props) => {
   //our state that will contain all the data
   const [enrichedData, setEnrichedData] = useState<TokenOverviewAnalysis | null>(token_overview);
 
@@ -25,10 +24,10 @@ export const TokenOverview = ({ token_overview, tokenAddress, chainId }: Props) 
   }
 
   // if (!token_overview?.token_contract) {
-  //   return <div>No token contract data available</div>; // Handle null case
+  //   return <div>No token contract data available</div>; // Handle case where contract address is not provided
   // }
 
-  // Here we will check if the fields that can be fethced from external api sources are  empty. If any of the field is empty, we will fetch values from there
+  // Here we will check if the fields that can be fethced from external api sources are empty. If any of the field is empty, we will fetch values from there
   const hasMissingPriceData = (data: TokenOverviewAnalysis | null): boolean => {
     if (!data) return true;
     return !data.price || !data.market_cap || !data.volume_24h;

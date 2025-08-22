@@ -39,11 +39,13 @@ export const TokenDetails = ({ url, tokenAddress, chainId, tokenName }: props) =
     );
   }
 
+  const token_address = $projectOverviewReport?.data?.token_overview?.token_contract;
+
   return (
     <Report
       isFailed={$projectOverviewReport.isError}
       projectOverviewData={$projectOverviewReport.data}
-      tokenAddress={tokenAddress}
+      tokenAddress={token_address}
       chainId={chainId}
       url={url}
       tokenName={tokenName}

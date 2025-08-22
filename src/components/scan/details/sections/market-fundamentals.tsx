@@ -121,12 +121,12 @@ export const MarketFundamentals = ({
   chainId,
   url,
 }: Props) => {
+  //our state that will contain all the data
   const [enrichedData, setEnrichedData] = useState<enrichedDataSchema | null>(null);
-  const [hasUpdatedGecko, setHasUpdatedGecko] = useState(false);
-  const [hasUpdatedMoralis, setHasUpdatedMoralis] = useState(false);
+  const [hasUpdatedGecko, setHasUpdatedGecko] = useState(false); //state that holds if gecko data is updated
+  const [hasUpdatedMoralis, setHasUpdatedMoralis] = useState(false); //state that holds if moralis data is updated
 
-  // Create initial enriched data from props
-
+  //initialise data from the data fetched from our backend
   const createInitialData = (): enrichedDataSchema => {
     return {
       // From marketFundamentals
@@ -147,7 +147,6 @@ export const MarketFundamentals = ({
       total_transactions_7d: fundamentals?.total_transactions_7d || null,
     };
   };
-
   useEffect(() => {
     const initialData = createInitialData();
     setEnrichedData(initialData);
