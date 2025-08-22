@@ -5,7 +5,7 @@ type Props = {
 };
 
 const DashboardPage = async ({ searchParams }: Props) => {
-  const resolvedSearchParams = searchParams;
+  const resolvedSearchParams = await searchParams; // ✅ Await the Promise
   const url = resolvedSearchParams.url;
   const tokenAddress = resolvedSearchParams.tokenAddress;
   const chainId = resolvedSearchParams.chainId;

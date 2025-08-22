@@ -31,7 +31,9 @@ export const SignInForm = () => {
 
   const $login = useMutation<any, any, FormValues>({
     mutationFn: loginAction,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      localStorage.setItem('accessToken', res?.data?.accessToken);
+      localStorage.setItem('refreshToken', res?.data?.refreshToken);
       setTimeout(() => {
         window.location.replace('/dashboard');
       }, 100);

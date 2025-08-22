@@ -23,8 +23,6 @@ export const loginAction = async (input: {
     body: payload,
     withoutAuth: true,
   });
-  console.log('loginAction completed successfully. Returning data:', responseData);
-
   // Return the response so the UI knows it was successful.
   return responseData;
 };

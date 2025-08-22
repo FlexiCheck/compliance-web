@@ -25,9 +25,6 @@ const ClientDashboard: React.FC<Props> = ({
 }) => {
   const router = useRouter();
 
-  // Debug: Log values to verify
-  console.log('ClientDashboard props:', { url, tokenAddress, chainId });
-
   // Strict check for null or undefined
   // if (!url || !tokenAddress || !chainId) {
   if (url == null || tokenAddress == null || chainId == null || tokenName == null) {

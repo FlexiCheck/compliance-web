@@ -2,7 +2,6 @@ import { createRequest } from '../request/create-request';
 
 export const runAnalysisAction = async (input: { symbol: string; url: string }) => {
   try {
-    console.log('run runAnalysisAction');
     const query = new URLSearchParams({ name: input.url });
     const response = await createRequest(
       'GET',
@@ -11,10 +10,9 @@ export const runAnalysisAction = async (input: { symbol: string; url: string }) 
       query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
-    console.log('runAnalysisAction completed successfully:', response);
     return response.data;
   } catch (error) {
-    console.log('Something went wrong: runAnalysisAction', error);
+    console.log('runAnalysisAction error', error);
   }
 };
 
@@ -28,7 +26,6 @@ export const getProjectOverview = async (input: { url: string }) => {
       query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
-    console.log('getProjectOverview completed successfully:', response);
     return response.data;
   } catch (error) {
     console.log('getProjectOverview error occured:', error);
@@ -45,7 +42,6 @@ export const getProjectSecurity = async (input: { url: string }) => {
       query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
-    console.log('getProjectOverview completed successfully:', response);
     return response.data;
   } catch (error) {
     console.log('getProjectSecurity error occured:', error);
@@ -65,10 +61,9 @@ export const getProjectDomain = async (input: { url: string }) => {
       query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
-    console.log('getProjectOverview completed successfully:', response);
     return response.data;
   } catch (error) {
-    console.log('getProjectSecurity error occured:', error);
+    console.log('getProjectDomain error occured:', error);
   }
 };
 
@@ -84,7 +79,6 @@ export const getProjectWebContent = async (input: { url: string }) => {
       query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
-    console.log('getProjectWebContent completed successfully:', response);
     return response.data;
   } catch (error) {
     console.log('getProjectWebContent error occured:', error);
@@ -92,8 +86,6 @@ export const getProjectWebContent = async (input: { url: string }) => {
 };
 
 export const getProjectAdverseMediaContent = async (input: { tokenName: string }) => {
-  console.log('getProjectAdverseMediaContent', input);
-
   try {
     const query = new URLSearchParams({ tokenName: input.tokenName, tokenSymbol: input.tokenName });
     const response = await createRequest(
@@ -103,7 +95,6 @@ export const getProjectAdverseMediaContent = async (input: { tokenName: string }
       query, // Pass query parameters
       withoutAuth: false, // Include auth token if needed
     });
-    console.log('getProjectAdverseMediaContent completed successfully:', response);
     return response.data;
   } catch (error) {
     console.log('getProjectAdverseMediaContent error occured:', error);

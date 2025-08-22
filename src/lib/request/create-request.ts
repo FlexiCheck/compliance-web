@@ -251,7 +251,7 @@ export const createRequest = <Path extends string>(method: RequestMethods, url: 
     // --- MODIFIED AUTH LOGIC ---
     // If the request needs authentication, read the token from cookies and set the header.
     if (!input.withoutAuth) {
-      const token = getCookie('access-token');
+      const token = localStorage.getItem('accessToken');
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }

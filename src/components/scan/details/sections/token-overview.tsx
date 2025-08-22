@@ -17,45 +17,54 @@ type Props = {
 };
 
 export const TokenOverview = ({ token_overview, tokenAddress, chainId }: Props) => {
+  //our state that will contain all the data
   const [enrichedData, setEnrichedData] = useState<TokenOverviewAnalysis | null>(token_overview);
 
   if (!token_overview) {
     return <div>No token overview data available</div>; // Handle null case
   }
 
-  // Check if any required fields are missing
+  // if (!token_overview?.token_contract) {
+  //   return <div>No token contract data available</div>; // Handle null case
+  // }
+
+  // Here we will check if the fields that can be fethced from external api sources are  empty. If any of the field is empty, we will fetch values from there
   const hasMissingPriceData = (data: TokenOverviewAnalysis | null): boolean => {
     if (!data) return true;
     return !data.price || !data.market_cap || !data.volume_24h;
   };
   const shouldFetch = hasMissingPriceData(token_overview);
 
-  //Now that we have figured out if any of the files are missing or not, we can run the query
+  //This query only runs if we have no data in fields that can be fetched externally
   const {
     data: geckoData,
     isLoading,
     error,
     isSuccess,
   } = useQuery({
-    queryKey: ['token-price-data', tokenAddress, chainId],
-    queryFn: () => coinGeckoDatafetcher(tokenAddress, chainId),
+    queryKey: ['token-price-data', token_overview?.token_contract, chainId],
+    queryFn: () => coinGeckoDatafetcher(token_overview?.token_contract || '', chainId),
     enabled: shouldFetch, // Only fetch if we're missing data
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
     retry: 2,
   });
 
-  // Update enriched data when we get new data from CoinGecko
+  // This useEffect runs whenever the data is fetched successfully from the query, then we set the data
   useEffect(() => {
     if (shouldFetch && isSuccess && geckoData && token_overview) {
+      //we only set the values that are not being fetched from the backend
       const updatedData: TokenOverviewAnalysis = {
         ...token_overview,
-        price: geckoData.market_data.current_price.usd,
-        market_cap: geckoData.market_data.market_cap.usd,
-        volume_24h: geckoData.market_data.total_volume.usd,
-        // You can also add the 24h high/low if needed:
-        // low_24h: formatPrice(geckoData.market_data.low_24h.usd),
-        // high_24h: formatPrice(geckoData.market_data.high_24h.usd),
+        price: !!token_overview.price
+          ? token_overview.price
+          : geckoData.market_data.current_price.usd,
+        market_cap: !!token_overview.market_cap
+          ? token_overview.market_cap
+          : geckoData.market_data.market_cap.usd,
+        volume_24h: !!token_overview.volume_24h
+          ? token_overview.volume_24h
+          : geckoData.market_data.total_volume.usd,
       };
       setEnrichedData(updatedData);
     } else if (!shouldFetch) {
@@ -68,7 +77,6 @@ export const TokenOverview = ({ token_overview, tokenAddress, chainId }: Props) 
     return <div>No token overview data available</div>;
   }
 
-  console.log('In the component: ', enrichedData);
   const { ticker, price, market_cap, volume_24h, website, token_contract, socials, description } =
     enrichedData!;
 
@@ -96,7 +104,7 @@ export const TokenOverview = ({ token_overview, tokenAddress, chainId }: Props) 
 
       <DetailsItem title="Contract address">
         <div className="text-xs font-mono bg-gray-100 p-2 rounded break-all mt-1">
-          {tokenAddress ?? 'N/A'}
+          {token_contract ?? 'N/A'}
         </div>
       </DetailsItem>
 
@@ -110,8 +118,8 @@ export const TokenOverview = ({ token_overview, tokenAddress, chainId }: Props) 
             </Link>
           )}
 
-          {tokenAddress && (
-            <Link target="_blank" href={`https://etherscan.io/token/${tokenAddress}`}>
+          {token_contract && (
+            <Link target="_blank" href={`https://etherscan.io/token/${token_contract}`}>
               <Button variant="external" size="xs">
                 Etherscan <LucideExternalLink />
               </Button>
